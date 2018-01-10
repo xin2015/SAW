@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>ASP.NET</h1>
+    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>
+            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+            enables a clean separation of concerns and gives you full control over markup
+            for enjoyable, agile development.
+        </p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Get more libraries</h2>
+        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Web Hosting</h2>
+        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jsencrypt.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCcmjh1b3i+Zm+OA9oI50GzGYWRvxg9eUQvaKXXzq04lNtdYYCbFyAbUkHrDlS/yinqkYCs+k9JwG2uRNBvdGgpPS8tlhZVCE7IrfMEqRp1tie8ASLjsHcflKowWJlwOoOUuh1h4NmTqRHB7pW2p1PJPCLqMVzDRAzRw0GKULGtVQIDAQAB";
+            var privateKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAJyaOHVveL5mb44D2gjnQbMZhZG/GD15RC9opdfOrTiU211hgJsXIBtSQesOVL/KKeqRgKz6T0nAba5E0G90aCk9Ly2WFlUITsit8wSpGnW2J7wBIuOwdx+UqjBYmXA6g5S6HWHg2ZOpEcHulbanU8k8IuoxXMNEDNHDQYpQsa1VAgMBAAECgYA4qHdqzZTS1j7gE7ar5/dWNBKmQ4wimaA4wtTVunnjcb/YDjG4aup72AvvXjT9WshFjLUQYFOVbGCCX3VGDcitKgXIEhgsT8EdDnD+uEYN9Pylq31XiAHOeV3P541Il8CINJqyCQ2trBbYdjijGUte2/Pwej/rgaAwTenACN82FQJBAMt6RxeQTMVy3MtzvMLH2J1CabOsleFPWQDrp/ZpUUJJxv098Ge/qDLmWH+jcuHorEzY4evk0Yjk7WS6UbS1vDsCQQDFBnJYTPpucM9Ef4F/P9BsmIzO7MlUiKuxCFX91LFyoFnYQ9syYtfu0+CS8P+BKCD4HLxQkC94rFXtdv6JvvOvAkBmpzbMfYEtr8gSYD5fqgDvPX0kJzKqK6TEYR8oonNbVOsuAZySSs+pdio5opUnwYGDd3tqzdKkFJJrWdA0sebXAkEAwG89e3UkHH5eUp7e0nR3k7mjve+T7NbYKr7jjloRPs3TMuGD1ECqev/CloKAa5vQJ8WZQG6zjv9zpc3VaqBwzQJAX3k22xsqQViWF+0DVLPcrZUrJJzeNfMFpUNV2ey3okUrswpAQdxLtBAzTs2I3JoMGzK+b4jRL8hJOs/ZS/4GOw==";
+            var encrypt = new JSEncrypt();
+            encrypt.setPublicKey(publicKey);
+            var text = "liuhaixin";
+            var cipher = encrypt.encrypt(text);
+            console.log(cipher);
+            encrypt.setPrivateKey(privateKey);
+            var plain = encrypt.decrypt(cipher);
+            console.log(plain);
+        })
+    </script>
+}
