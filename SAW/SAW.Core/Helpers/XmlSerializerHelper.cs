@@ -11,7 +11,7 @@ namespace SAW.Core.Helpers
     /// <summary>
     /// XML序列化反序列化工具类
     /// </summary>
-    public class XmlSerializerHelper
+    public static class XmlSerializerHelper
     {
         /// <summary>  
         /// 反序列化XML为类实例  

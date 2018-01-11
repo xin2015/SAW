@@ -46,6 +46,7 @@ namespace SAW.ConsoleApp
             rsa.Dispose();
         }
 
+
         static string RSAPublicKeyCSharpToJava(RsaKeyParameters rkp)
         {
             SubjectPublicKeyInfo spki = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(rkp);
