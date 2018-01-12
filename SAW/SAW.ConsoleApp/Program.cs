@@ -8,6 +8,7 @@ using SAW.Core.Extensions;
 using SAW.Core.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -19,31 +20,37 @@ namespace SAW.ConsoleApp
     {
         static void Main(string[] args)
         {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-            try
-            {
-                RSAParameters privateParameter = rsa.ExportParameters(true);
-                Console.WriteLine(XmlSerializerHelper.SerializeXML<RSAParameters>(privateParameter));
-                BigInteger modulus = new BigInteger(1, privateParameter.Modulus);
-                BigInteger publicExponent = new BigInteger(1, privateParameter.Exponent);
-                BigInteger d = new BigInteger(1, privateParameter.D);
-                BigInteger p = new BigInteger(1, privateParameter.P);
-                BigInteger q = new BigInteger(1, privateParameter.Q);
-                BigInteger dP = new BigInteger(1, privateParameter.DP);
-                BigInteger dQ = new BigInteger(1, privateParameter.DQ);
-                BigInteger qInv = new BigInteger(1, privateParameter.InverseQ);
-                RsaKeyParameters publicKey = new RsaKeyParameters(false, modulus, publicExponent);
-                RsaPrivateCrtKeyParameters privateCrtKey = new RsaPrivateCrtKeyParameters(modulus, publicExponent, d, p, q, dP, dQ, qInv);
-                Console.WriteLine(RSAPublicKeyCSharpToJava(publicKey));
-                Console.WriteLine(rsa.ExportCspBlob(false).ToBase64String());
-                Console.WriteLine(RSAPrivateKeyCSharpToJava(privateCrtKey));
-                Console.WriteLine(rsa.ExportCspBlob(true).ToBase64String());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            rsa.Dispose();
+            //RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            //try
+            //{
+            //    RSAParameters privateParameter = rsa.ExportParameters(true);
+            //    Console.WriteLine(XmlSerializerHelper.SerializeXML<RSAParameters>(privateParameter));
+            //    BigInteger modulus = new BigInteger(1, privateParameter.Modulus);
+            //    BigInteger publicExponent = new BigInteger(1, privateParameter.Exponent);
+            //    BigInteger d = new BigInteger(1, privateParameter.D);
+            //    BigInteger p = new BigInteger(1, privateParameter.P);
+            //    BigInteger q = new BigInteger(1, privateParameter.Q);
+            //    BigInteger dP = new BigInteger(1, privateParameter.DP);
+            //    BigInteger dQ = new BigInteger(1, privateParameter.DQ);
+            //    BigInteger qInv = new BigInteger(1, privateParameter.InverseQ);
+            //    RsaKeyParameters publicKey = new RsaKeyParameters(false, modulus, publicExponent);
+            //    RsaPrivateCrtKeyParameters privateCrtKey = new RsaPrivateCrtKeyParameters(modulus, publicExponent, d, p, q, dP, dQ, qInv);
+            //    Console.WriteLine(RSAPublicKeyCSharpToJava(publicKey));
+            //    Console.WriteLine(rsa.ExportCspBlob(false).ToBase64String());
+            //    Console.WriteLine(RSAPrivateKeyCSharpToJava(privateCrtKey));
+            //    Console.WriteLine(rsa.ExportCspBlob(true).ToBase64String());
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
+            //rsa.Dispose();
+
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            path += "\\ContentTransferSystem.url";
+            string targetPath = "http://10.10.10.16:6055/";
+            string iconPath = "D:\\transfer.ico";
+            ShortcutHelper.CreateURLShortcut(path, targetPath, iconPath);
         }
 
 

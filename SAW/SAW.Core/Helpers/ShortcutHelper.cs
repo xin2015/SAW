@@ -1,6 +1,7 @@
 ﻿using IWshRuntimeLibrary;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,20 @@ namespace SAW.Core.Helpers
             urlShortcut.Save();
         }
 
+        public static void CreateURLShortcut(string path, string targetPath, string iconPath)
+        {
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                sw.WriteLine("[InternetShortcut]");
+                sw.WriteLine("IDList=");
+                sw.WriteLine("URL=" + targetPath);
+                sw.WriteLine("IconIndex=0");
+                sw.WriteLine("HotKey=0");
+                sw.WriteLine("IconFile=" + iconPath);
+                sw.Flush();
+            }
+        }
+
         /// <summary>
         /// 创建快捷方式
         /// </summary>
@@ -40,7 +55,7 @@ namespace SAW.Core.Helpers
 
         public static void Demo()
         {
-            string path = "D:\\jiandan.url";
+            string path = string.Format("{0}\\jiandan.url", Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory));
             string targetPath = "http://jiandan.net/";
             CreateURLShortcut(path, targetPath);
             path = "D:\\chrometest.lnk";
