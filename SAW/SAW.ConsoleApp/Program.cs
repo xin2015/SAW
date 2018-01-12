@@ -46,11 +46,14 @@ namespace SAW.ConsoleApp
             //}
             //rsa.Dispose();
 
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            path += "\\ContentTransferSystem.url";
-            string targetPath = "http://10.10.10.16:6055/";
-            string iconPath = "D:\\transfer.ico";
-            ShortcutHelper.CreateURLShortcut(path, targetPath, iconPath);
+            string path = "D:\\test.txt";
+            byte[] array = "Hello World.".FromUTF8String();
+            using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.ReadWrite))
+            {
+                fs.Write(array, 0, array.Length);
+                fs.Flush(true);
+            }
+            Console.WriteLine(HashHelper.ComputeHashX2String(path));
         }
 
 
