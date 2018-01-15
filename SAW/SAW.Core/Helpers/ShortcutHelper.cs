@@ -26,6 +26,12 @@ namespace SAW.Core.Helpers
             urlShortcut.Save();
         }
 
+        /// <summary>
+        /// 创建InternetShortcut
+        /// </summary>
+        /// <param name="path">快捷方式路径</param>
+        /// <param name="targetPath">目标URL</param>
+        /// <param name="iconPath">自定义图标路径</param>
         public static void CreateURLShortcut(string path, string targetPath, string iconPath)
         {
             using (StreamWriter sw = new StreamWriter(path))

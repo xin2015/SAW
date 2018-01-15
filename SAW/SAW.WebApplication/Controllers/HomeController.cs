@@ -26,5 +26,16 @@ namespace SAW.WebApplication.Controllers
 
             return View();
         }
+
+        public ActionResult FileExists(string path)
+        {
+            path = Server.MapPath(path);
+            return Json(System.IO.File.Exists(path), JsonRequestBehavior.AllowGet);
+        }
+
+        public FilePathResult FileDownload(string fileName)
+        {
+            return File(fileName, "application/octet-stream", System.IO.Path.GetFileName(fileName));
+        }
     }
 }
