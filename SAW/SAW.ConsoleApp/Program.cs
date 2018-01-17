@@ -46,14 +46,22 @@ namespace SAW.ConsoleApp
             //}
             //rsa.Dispose();
 
-            string path = "D:\\test.txt";
-            byte[] array = "Hello World.".FromUTF8String();
-            using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.ReadWrite))
+            foreach(DriveInfo di in DriveInfo.GetDrives())
             {
-                fs.Write(array, 0, array.Length);
-                fs.Flush(true);
+                if (di.IsReady)
+                {
+                    Console.WriteLine(di.Name);
+                    Console.WriteLine(di.DriveType);
+                    Console.WriteLine(di.DriveFormat);
+                    Console.WriteLine(di.AvailableFreeSpace);
+                    Console.WriteLine(di.TotalFreeSpace);
+                    Console.WriteLine(di.TotalSize);
+                    Console.WriteLine(di.RootDirectory);
+                    Console.WriteLine(di.VolumeLabel);
+                    Console.WriteLine();
+                }
             }
-            Console.WriteLine(HashHelper.ComputeHashX2String(path));
+            Console.ReadLine();
         }
 
 
