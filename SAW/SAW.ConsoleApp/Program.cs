@@ -1,4 +1,5 @@
-﻿using Org.BouncyCastle.Asn1.Pkcs;
+﻿using Common.Logging;
+using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Math;
@@ -46,22 +47,34 @@ namespace SAW.ConsoleApp
             //}
             //rsa.Dispose();
 
+            ILog logger = LogManager.GetLogger<Program>();
             foreach(DriveInfo di in DriveInfo.GetDrives())
             {
                 if (di.IsReady)
                 {
-                    Console.WriteLine(di.Name);
-                    Console.WriteLine(di.DriveType);
-                    Console.WriteLine(di.DriveFormat);
-                    Console.WriteLine(di.AvailableFreeSpace);
-                    Console.WriteLine(di.TotalFreeSpace);
-                    Console.WriteLine(di.TotalSize);
-                    Console.WriteLine(di.RootDirectory);
-                    Console.WriteLine(di.VolumeLabel);
-                    Console.WriteLine();
+                    //Console.WriteLine(di.Name);
+                    //Console.WriteLine(di.DriveType);
+                    //Console.WriteLine(di.DriveFormat);
+                    //Console.WriteLine(di.AvailableFreeSpace);
+                    //Console.WriteLine(di.TotalFreeSpace);
+                    //Console.WriteLine(di.TotalSize);
+                    //Console.WriteLine(di.RootDirectory);
+                    //Console.WriteLine(di.VolumeLabel);
+                    //Console.WriteLine();
+                    logger.Debug(di.Name);
+                    logger.Debug(di.DriveType);
+                    logger.Debug(di.DriveFormat);
+                    logger.Debug(di.AvailableFreeSpace);
+                    logger.Debug(di.TotalFreeSpace);
+                    logger.Debug(di.TotalSize);
+                    logger.Debug(di.RootDirectory);
+                    logger.Debug(di.VolumeLabel);
                 }
             }
+
             Console.ReadLine();
+
+            
         }
 
 
