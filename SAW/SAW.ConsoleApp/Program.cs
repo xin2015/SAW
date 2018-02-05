@@ -47,34 +47,42 @@ namespace SAW.ConsoleApp
             //}
             //rsa.Dispose();
 
-            ILog logger = LogManager.GetLogger<Program>();
-            foreach(DriveInfo di in DriveInfo.GetDrives())
+            //ILog logger = LogManager.GetLogger<Program>();
+            //foreach (DriveInfo di in DriveInfo.GetDrives())
+            //{
+            //    if (di.IsReady)
+            //    {
+            //        Console.WriteLine(di.Name);
+            //        Console.WriteLine(di.DriveType);
+            //        Console.WriteLine(di.DriveFormat);
+            //        Console.WriteLine(di.AvailableFreeSpace);
+            //        Console.WriteLine(di.TotalFreeSpace);
+            //        Console.WriteLine(di.TotalSize);
+            //        Console.WriteLine(di.RootDirectory);
+            //        Console.WriteLine(di.VolumeLabel);
+            //        Console.WriteLine();
+            //    }
+            //}
+
+            Console.WriteLine("=> Creating a car and stepping on it!");
+            Car car = new Car("Zippy", 20);
+            try
             {
-                if (di.IsReady)
+                for (int i = 0; i < 10; i++)
                 {
-                    //Console.WriteLine(di.Name);
-                    //Console.WriteLine(di.DriveType);
-                    //Console.WriteLine(di.DriveFormat);
-                    //Console.WriteLine(di.AvailableFreeSpace);
-                    //Console.WriteLine(di.TotalFreeSpace);
-                    //Console.WriteLine(di.TotalSize);
-                    //Console.WriteLine(di.RootDirectory);
-                    //Console.WriteLine(di.VolumeLabel);
-                    //Console.WriteLine();
-                    logger.Debug(di.Name);
-                    logger.Debug(di.DriveType);
-                    logger.Debug(di.DriveFormat);
-                    logger.Debug(di.AvailableFreeSpace);
-                    logger.Debug(di.TotalFreeSpace);
-                    logger.Debug(di.TotalSize);
-                    logger.Debug(di.RootDirectory);
-                    logger.Debug(di.VolumeLabel);
+                    car.Accelerate(10);
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("\n*** Error! ***");
+                Console.WriteLine("Method:{0}", e.TargetSite);
+                Console.WriteLine("Message:{0}", e.Message);
+                Console.WriteLine("Source:{0}", e.Source);
+            }
 
+            Console.WriteLine("\n*** Out of exception logic ***");
             Console.ReadLine();
-
-            
         }
 
 
@@ -88,6 +96,45 @@ namespace SAW.ConsoleApp
         {
             PrivateKeyInfo pki = PrivateKeyInfoFactory.CreatePrivateKeyInfo(rkp);
             return pki.ToAsn1Object().GetEncoded().ToBase64String();
+        }
+    }
+
+    class Car
+    {
+        public const int MaxSpeed = 100;
+        public int CurrentSpeed { get; set; }
+        public string PetName { get; set; }
+
+        private bool carIsDead;
+
+        public Car() { }
+        public Car(string name, int speed)
+        {
+            CurrentSpeed = speed;
+            PetName = name;
+        }
+
+        public void Accelerate(int delta)
+        {
+            if (carIsDead)
+            {
+                Console.WriteLine("{0} is out of order...", PetName);
+            }
+            else
+            {
+                CurrentSpeed += delta;
+                if (CurrentSpeed > MaxSpeed)
+                {
+                    CurrentSpeed = 0;
+                    carIsDead = true;
+
+                    throw new Exception(string.Format("{0} has overheated!", PetName));
+                }
+                else
+                {
+                    Console.WriteLine("=> CurrentSpeed = {0}", CurrentSpeed);
+                }
+            }
         }
     }
 }
