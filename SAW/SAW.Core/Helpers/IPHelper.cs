@@ -35,7 +35,7 @@ namespace SAW.Core.Helpers
         }
 
         /// <summary>
-        /// 获取IPv4、IPv6地址
+        /// 获取本机IP地址
         /// </summary>
         /// <returns>本机IP地址</returns>
         public static List<string> GetHostAddresses()

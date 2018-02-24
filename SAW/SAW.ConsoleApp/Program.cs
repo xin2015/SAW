@@ -1,19 +1,14 @@
-﻿using Common.Logging;
-using Org.BouncyCastle.Asn1.Pkcs;
+﻿using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.X509;
 using SAW.Core.Extensions;
 using SAW.Core.Helpers;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
+using System.Net;
 
 namespace SAW.ConsoleApp
 {
@@ -64,27 +59,28 @@ namespace SAW.ConsoleApp
             //    }
             //}
 
-            Console.WriteLine("=> Creating a car and stepping on it!");
-            Car car = new Car("Zippy", 20);
-            try
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    car.Accelerate(10);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("\n*** Error! ***");
-                Console.WriteLine("Method:{0}", e.TargetSite);
-                Console.WriteLine("Message:{0}", e.Message);
-                Console.WriteLine("Source:{0}", e.Source);
-            }
+            //Console.WriteLine("=> Creating a car and stepping on it!");
+            //Car car = new Car("Zippy", 20);
+            //try
+            //{
+            //    for (int i = 0; i < 10; i++)
+            //    {
+            //        car.Accelerate(10);
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine("\n*** Error! ***");
+            //    Console.WriteLine("Method:{0}", e.TargetSite);
+            //    Console.WriteLine("Message:{0}", e.Message);
+            //    Console.WriteLine("Source:{0}", e.Source);
+            //}
 
-            Console.WriteLine("\n*** Out of exception logic ***");
+            //Console.WriteLine("\n*** Out of exception logic ***");
+
+            ZipHelper.CompressAll(@"D:\Test\1.0.0.1.zip", @"D:\1.0.0.1");
             Console.ReadLine();
         }
-
 
         static string RSAPublicKeyCSharpToJava(RsaKeyParameters rkp)
         {
