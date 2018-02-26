@@ -54,6 +54,7 @@
     <Compile Include="Helpers\IPHelper.cs" />
     <Compile Include="Helpers\RegistryHelper.cs" />
     <Compile Include="Helpers\ShortcutHelper.cs" />
+    <Compile Include="Helpers\SqlHelper.cs" />
     <Compile Include="Helpers\XmlSerializerHelper.cs" />
     <Compile Include="Helpers\ZipHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

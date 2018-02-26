@@ -77,8 +77,12 @@ namespace SAW.ConsoleApp
             //}
 
             //Console.WriteLine("\n*** Out of exception logic ***");
-
-            ZipHelper.CompressAll(@"D:\Test\1.0.0.1.zip", @"D:\1.0.0.1");
+            
+            string connectionString = "data source=.;initial catalog=Xin;persist security info=True;user id=sa;password=123456";
+            string dbName = "Xin";
+            string backupFileName = "Xin_1.0.0.0.bak";
+            SqlHelper.Backup(connectionString, dbName, backupFileName);
+            SqlHelper.Restore(connectionString, dbName, backupFileName);
             Console.ReadLine();
         }
 
