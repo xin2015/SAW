@@ -77,12 +77,23 @@ namespace SAW.ConsoleApp
             //}
 
             //Console.WriteLine("\n*** Out of exception logic ***");
-            
-            string connectionString = "data source=.;initial catalog=Xin;persist security info=True;user id=sa;password=123456";
-            string dbName = "Xin";
-            string backupFileName = "Xin_1.0.0.0.bak";
-            SqlHelper.Backup(connectionString, dbName, backupFileName);
-            SqlHelper.Restore(connectionString, dbName, backupFileName);
+
+            FtpHelper helper = new FtpHelper("ftp://202.104.69.206", "admin", "suncereltd@2017");
+            try
+            {
+                helper.DownloadFile("Data/ZZ/20180225.zip", "D:\\20180225.zip");
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "远程服务器返回错误: (550) 文件不可用(例如，未找到文件，无法访问文件)。")
+                {
+                    Console.WriteLine("文件未生成");
+                }
+                else
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
             Console.ReadLine();
         }
 
