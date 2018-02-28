@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +60,17 @@ namespace SAW.Core.Extensions
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 将时间字符串转换为DateTime
+        /// </summary>
+        /// <param name="text">时间字符串</param>
+        /// <param name="format">格式说明符</param>
+        /// <returns></returns>
+        public static DateTime ToDateTimeExact(this string text, string format)
+        {
+            return DateTime.ParseExact(text, format, CultureInfo.CurrentCulture);
         }
     }
 }
