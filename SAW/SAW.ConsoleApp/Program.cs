@@ -8,6 +8,7 @@ using SAW.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Net;
 
 namespace SAW.ConsoleApp
@@ -77,8 +78,52 @@ namespace SAW.ConsoleApp
             //}
 
             //Console.WriteLine("\n*** Out of exception logic ***");
-
+            string d = Path.GetFileName(@"D:\Z_ENV_EWFS_L2_900030_20180226095047_DBB_CNEMC_SH2_BK1_201802252000_008\CNEMC\900030\2018022608");
+            string e = Path.GetFileName(@"D:\Z_ENV_EWFS_L2_900030_20180226095047_DBB_CNEMC_SH2_BK1_201802252000_008\CNEMC\900030\2018022608\SH2_BK1_1007\");
+            string f = Path.GetFileName(@"D:\Z_ENV_EWFS_L2_900030_20180226095047_DBB_CNEMC_SH2_BK1_201802252000_008\CNEMC\900030\2018022608\SH2_BK1_1007\naqpd02.2018022516.ctl");
             Console.ReadLine();
+        }
+
+        static void Copy(string sPath, string tPath)
+        {
+            Stack<string> sStack = new Stack<string>();
+            Stack<string> tStack = new Stack<string>();
+            sStack.Push(sPath);
+            tStack.Push(tPath);
+            while (sStack.Count != 0)
+            {
+                sPath = sStack.Pop();
+                tPath = tStack.Pop();
+                if (!Directory.Exists(tPath))
+                {
+                    Directory.CreateDirectory(tPath);
+                }
+                foreach (string file in Directory.GetFiles(sPath))
+                {
+                    File.Copy(file, file.Replace(sPath, tPath));
+                }
+                foreach (string directory in Directory.GetDirectories(sPath))
+                {
+                    sStack.Push(directory);
+                    tStack.Push(directory.Replace(sPath, tPath));
+                }
+            }
+        }
+
+        static void Copy2(string sPath, string tPath)
+        {
+            if (!Directory.Exists(tPath))
+            {
+                Directory.CreateDirectory(tPath);
+            }
+            foreach (string file in Directory.GetFiles(sPath))
+            {
+                File.Copy(file, file.Replace(sPath, tPath));
+            }
+            foreach (string directory in Directory.GetDirectories(sPath))
+            {
+                Copy2(directory, directory.Replace(sPath, tPath));
+            }
         }
 
         static string RSAPublicKeyCSharpToJava(RsaKeyParameters rkp)

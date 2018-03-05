@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Uploadify";
+}
+
+<link href="~/Scripts/uploadify/uploadify.css" rel="stylesheet" />
+
+<input id="uploadify" type="file" />
+<button class="btn btn-primary">上传</button>
+
+@section scripts{
+    <script src="~/Scripts/uploadify/jquery.uploadify.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#uploadify").uploadify({
+                'auto': false,
+                'swf': '/Scripts/uploadify/uploadify.swf',
+                'uploader': '/Home/Upload'
+            });
+
+            $("button").click(function () {
+                $("#uploadify").uploadify('upload', '*');
+            });
+        });
+    </script>
+}
