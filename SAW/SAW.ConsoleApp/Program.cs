@@ -8,6 +8,7 @@ using SAW.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 
@@ -78,9 +79,74 @@ namespace SAW.ConsoleApp
             //}
 
             //Console.WriteLine("\n*** Out of exception logic ***");
-            string d = Path.GetFileName(@"D:\Z_ENV_EWFS_L2_900030_20180226095047_DBB_CNEMC_SH2_BK1_201802252000_008\CNEMC\900030\2018022608");
-            string e = Path.GetFileName(@"D:\Z_ENV_EWFS_L2_900030_20180226095047_DBB_CNEMC_SH2_BK1_201802252000_008\CNEMC\900030\2018022608\SH2_BK1_1007\");
-            string f = Path.GetFileName(@"D:\Z_ENV_EWFS_L2_900030_20180226095047_DBB_CNEMC_SH2_BK1_201802252000_008\CNEMC\900030\2018022608\SH2_BK1_1007\naqpd02.2018022516.ctl");
+            int length = 200;
+            Random rand = new Random();
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            for (int i = 0; i < length; i++)
+            {
+                int count = 100 + i * 10;
+                List<int> list = new List<int>();
+                for (int j = 0; j < count; j++)
+                {
+                    list.Add(rand.Next(100));
+                }
+                SortHelper.BubbleSort(list);
+            }
+            sw.Stop();
+            Console.WriteLine("{0, -20}:{1}", "BubbleSort", sw.Elapsed);
+            sw.Restart();
+            for (int i = 0; i < length; i++)
+            {
+                int count = 100 + i * 10;
+                List<int> list = new List<int>();
+                for (int j = 0; j < count; j++)
+                {
+                    list.Add(rand.Next(100));
+                }
+                SortHelper.BubbleSortWithCheck(list);
+            }
+            sw.Stop();
+            Console.WriteLine("{0, -20}:{1}", "BubbleSortWithCheck", sw.Elapsed);
+            sw.Restart();
+            for (int i = 0; i < length; i++)
+            {
+                int count = 100 + i * 10;
+                List<int> list = new List<int>();
+                for (int j = 0; j < count; j++)
+                {
+                    list.Add(rand.Next(100));
+                }
+                SortHelper.SelectionSort(list);
+            }
+            sw.Stop();
+            Console.WriteLine("{0, -20}:{1}", "SelectionSort", sw.Elapsed);
+            sw.Restart();
+            for (int i = 0; i < length; i++)
+            {
+                int count = 100 + i * 10;
+                List<int> list = new List<int>();
+                for (int j = 0; j < count; j++)
+                {
+                    list.Add(rand.Next(100));
+                }
+                SortHelper.InsertionSort(list);
+            }
+            sw.Stop();
+            Console.WriteLine("{0, -20}:{1}", "InsertionSort", sw.Elapsed);
+            sw.Restart();
+            for (int i = 0; i < length; i++)
+            {
+                int count = 100 + i * 10;
+                List<int> list = new List<int>();
+                for (int j = 0; j < count; j++)
+                {
+                    list.Add(rand.Next(100));
+                }
+                list.Sort();
+            }
+            sw.Stop();
+            Console.WriteLine("{0, -20}:{1}", "Sort", sw.Elapsed);
             Console.ReadLine();
         }
 
