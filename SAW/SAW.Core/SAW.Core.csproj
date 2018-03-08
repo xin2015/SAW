@@ -49,6 +49,7 @@
     <Compile Include="CryptoTransverters\SymmetricalEncryption.cs" />
     <Compile Include="Extensions\ByteExtension.cs" />
     <Compile Include="Extensions\StringExtension.cs" />
+    <Compile Include="Helpers\BatHelper.cs" />
     <Compile Include="Helpers\FtpHelper.cs" />
     <Compile Include="Helpers\HashHelper.cs" />
     <Compile Include="Helpers\HttpHelper.cs" />

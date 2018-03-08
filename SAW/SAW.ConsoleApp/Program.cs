@@ -79,6 +79,14 @@ namespace SAW.ConsoleApp
             //}
 
             //Console.WriteLine("\n*** Out of exception logic ***");
+            try
+            {
+                BatHelper.LaunchBat("D:\\stop.bat");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             int length = 200;
             Random rand = new Random();
             Stopwatch sw = new Stopwatch();
