@@ -16,6 +16,8 @@ namespace SAW.ConsoleApp
 {
     class Program
     {
+        static Random rand = new Random();
+
         static void Main(string[] args)
         {
             //RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
@@ -79,14 +81,6 @@ namespace SAW.ConsoleApp
             //}
 
             //Console.WriteLine("\n*** Out of exception logic ***");
-            try
-            {
-                BatHelper.LaunchBat("D:\\stop.bat");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
             int length = 200;
             Random rand = new Random();
             Stopwatch sw = new Stopwatch();
@@ -94,12 +88,12 @@ namespace SAW.ConsoleApp
             for (int i = 0; i < length; i++)
             {
                 int count = 100 + i * 10;
-                List<int> list = new List<int>();
+                List<SRSystem> list = new List<SRSystem>();
                 for (int j = 0; j < count; j++)
                 {
-                    list.Add(rand.Next(100));
+                    list.Add(GetSRSystem());
                 }
-                SortHelper.BubbleSort(list);
+                list.Sort();
             }
             sw.Stop();
             Console.WriteLine("{0, -20}:{1}", "BubbleSort", sw.Elapsed);
@@ -158,48 +152,6 @@ namespace SAW.ConsoleApp
             Console.ReadLine();
         }
 
-        static void Copy(string sPath, string tPath)
-        {
-            Stack<string> sStack = new Stack<string>();
-            Stack<string> tStack = new Stack<string>();
-            sStack.Push(sPath);
-            tStack.Push(tPath);
-            while (sStack.Count != 0)
-            {
-                sPath = sStack.Pop();
-                tPath = tStack.Pop();
-                if (!Directory.Exists(tPath))
-                {
-                    Directory.CreateDirectory(tPath);
-                }
-                foreach (string file in Directory.GetFiles(sPath))
-                {
-                    File.Copy(file, file.Replace(sPath, tPath));
-                }
-                foreach (string directory in Directory.GetDirectories(sPath))
-                {
-                    sStack.Push(directory);
-                    tStack.Push(directory.Replace(sPath, tPath));
-                }
-            }
-        }
-
-        static void Copy2(string sPath, string tPath)
-        {
-            if (!Directory.Exists(tPath))
-            {
-                Directory.CreateDirectory(tPath);
-            }
-            foreach (string file in Directory.GetFiles(sPath))
-            {
-                File.Copy(file, file.Replace(sPath, tPath));
-            }
-            foreach (string directory in Directory.GetDirectories(sPath))
-            {
-                Copy2(directory, directory.Replace(sPath, tPath));
-            }
-        }
-
         static string RSAPublicKeyCSharpToJava(RsaKeyParameters rkp)
         {
             SubjectPublicKeyInfo spki = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(rkp);
@@ -210,6 +162,15 @@ namespace SAW.ConsoleApp
         {
             PrivateKeyInfo pki = PrivateKeyInfoFactory.CreatePrivateKeyInfo(rkp);
             return pki.ToAsn1Object().GetEncoded().ToBase64String();
+        }
+
+        static SRSystem GetSRSystem()
+        {
+            return new SRSystem()
+            {
+                Version = string.Format("{0}.{1}.{2}.{3}", rand.Next(20), rand.Next(20), rand.Next(20), rand.Next(20)),
+                Price = rand.Next(10000)
+            };
         }
     }
 
@@ -250,5 +211,11 @@ namespace SAW.ConsoleApp
                 }
             }
         }
+    }
+
+    class SRSystem
+    {
+        public string Version { get; set; }
+        public int Price { get; set; }
     }
 }
