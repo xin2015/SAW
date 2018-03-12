@@ -71,5 +71,10 @@ namespace SAW.WebApplication.Controllers
             }
             return Json(new { Status = status, Message = message }, JsonRequestBehavior.DenyGet);
         }
+
+        public ActionResult GroundOverlay()
+        {
+            return View();
+        }
     }
 }
