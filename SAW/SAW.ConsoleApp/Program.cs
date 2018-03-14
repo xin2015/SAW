@@ -1,6 +1,7 @@
 ﻿using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.X509;
 using SAW.Core.Extensions;
@@ -11,6 +12,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Security.Cryptography;
 
 namespace SAW.ConsoleApp
 {
@@ -20,32 +22,6 @@ namespace SAW.ConsoleApp
 
         static void Main(string[] args)
         {
-            //RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-            //try
-            //{
-            //    RSAParameters privateParameter = rsa.ExportParameters(true);
-            //    Console.WriteLine(XmlSerializerHelper.SerializeXML<RSAParameters>(privateParameter));
-            //    BigInteger modulus = new BigInteger(1, privateParameter.Modulus);
-            //    BigInteger publicExponent = new BigInteger(1, privateParameter.Exponent);
-            //    BigInteger d = new BigInteger(1, privateParameter.D);
-            //    BigInteger p = new BigInteger(1, privateParameter.P);
-            //    BigInteger q = new BigInteger(1, privateParameter.Q);
-            //    BigInteger dP = new BigInteger(1, privateParameter.DP);
-            //    BigInteger dQ = new BigInteger(1, privateParameter.DQ);
-            //    BigInteger qInv = new BigInteger(1, privateParameter.InverseQ);
-            //    RsaKeyParameters publicKey = new RsaKeyParameters(false, modulus, publicExponent);
-            //    RsaPrivateCrtKeyParameters privateCrtKey = new RsaPrivateCrtKeyParameters(modulus, publicExponent, d, p, q, dP, dQ, qInv);
-            //    Console.WriteLine(RSAPublicKeyCSharpToJava(publicKey));
-            //    Console.WriteLine(rsa.ExportCspBlob(false).ToBase64String());
-            //    Console.WriteLine(RSAPrivateKeyCSharpToJava(privateCrtKey));
-            //    Console.WriteLine(rsa.ExportCspBlob(true).ToBase64String());
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
-            //rsa.Dispose();
-
             //ILog logger = LogManager.GetLogger<Program>();
             //foreach (DriveInfo di in DriveInfo.GetDrives())
             //{
@@ -81,87 +57,75 @@ namespace SAW.ConsoleApp
             //}
 
             //Console.WriteLine("\n*** Out of exception logic ***");
-            int length = 200;
-            Random rand = new Random();
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            for (int i = 0; i < length; i++)
-            {
-                int count = 100 + i * 10;
-                List<SRSystem> list = new List<SRSystem>();
-                for (int j = 0; j < count; j++)
-                {
-                    list.Add(GetSRSystem());
-                }
-                list.Sort();
-            }
-            sw.Stop();
-            Console.WriteLine("{0, -20}:{1}", "BubbleSort", sw.Elapsed);
-            sw.Restart();
-            for (int i = 0; i < length; i++)
-            {
-                int count = 100 + i * 10;
-                List<int> list = new List<int>();
-                for (int j = 0; j < count; j++)
-                {
-                    list.Add(rand.Next(100));
-                }
-                SortHelper.BubbleSortWithCheck(list);
-            }
-            sw.Stop();
-            Console.WriteLine("{0, -20}:{1}", "BubbleSortWithCheck", sw.Elapsed);
-            sw.Restart();
-            for (int i = 0; i < length; i++)
-            {
-                int count = 100 + i * 10;
-                List<int> list = new List<int>();
-                for (int j = 0; j < count; j++)
-                {
-                    list.Add(rand.Next(100));
-                }
-                SortHelper.SelectionSort(list);
-            }
-            sw.Stop();
-            Console.WriteLine("{0, -20}:{1}", "SelectionSort", sw.Elapsed);
-            sw.Restart();
-            for (int i = 0; i < length; i++)
-            {
-                int count = 100 + i * 10;
-                List<int> list = new List<int>();
-                for (int j = 0; j < count; j++)
-                {
-                    list.Add(rand.Next(100));
-                }
-                SortHelper.InsertionSort(list);
-            }
-            sw.Stop();
-            Console.WriteLine("{0, -20}:{1}", "InsertionSort", sw.Elapsed);
-            sw.Restart();
-            for (int i = 0; i < length; i++)
-            {
-                int count = 100 + i * 10;
-                List<int> list = new List<int>();
-                for (int j = 0; j < count; j++)
-                {
-                    list.Add(rand.Next(100));
-                }
-                list.Sort();
-            }
-            sw.Stop();
-            Console.WriteLine("{0, -20}:{1}", "Sort", sw.Elapsed);
+            //int length = 200;
+            //Random rand = new Random();
+            //Stopwatch sw = new Stopwatch();
+            //sw.Start();
+            //for (int i = 0; i < length; i++)
+            //{
+            //    int count = 100 + i * 10;
+            //    List<SRSystem> list = new List<SRSystem>();
+            //    for (int j = 0; j < count; j++)
+            //    {
+            //        list.Add(GetSRSystem());
+            //    }
+            //    list.Sort();
+            //}
+            //sw.Stop();
+            //Console.WriteLine("{0, -20}:{1}", "BubbleSort", sw.Elapsed);
+            //sw.Restart();
+            //for (int i = 0; i < length; i++)
+            //{
+            //    int count = 100 + i * 10;
+            //    List<int> list = new List<int>();
+            //    for (int j = 0; j < count; j++)
+            //    {
+            //        list.Add(rand.Next(100));
+            //    }
+            //    SortHelper.BubbleSortWithCheck(list);
+            //}
+            //sw.Stop();
+            //Console.WriteLine("{0, -20}:{1}", "BubbleSortWithCheck", sw.Elapsed);
+            //sw.Restart();
+            //for (int i = 0; i < length; i++)
+            //{
+            //    int count = 100 + i * 10;
+            //    List<int> list = new List<int>();
+            //    for (int j = 0; j < count; j++)
+            //    {
+            //        list.Add(rand.Next(100));
+            //    }
+            //    SortHelper.SelectionSort(list);
+            //}
+            //sw.Stop();
+            //Console.WriteLine("{0, -20}:{1}", "SelectionSort", sw.Elapsed);
+            //sw.Restart();
+            //for (int i = 0; i < length; i++)
+            //{
+            //    int count = 100 + i * 10;
+            //    List<int> list = new List<int>();
+            //    for (int j = 0; j < count; j++)
+            //    {
+            //        list.Add(rand.Next(100));
+            //    }
+            //    SortHelper.InsertionSort(list);
+            //}
+            //sw.Stop();
+            //Console.WriteLine("{0, -20}:{1}", "InsertionSort", sw.Elapsed);
+            //sw.Restart();
+            //for (int i = 0; i < length; i++)
+            //{
+            //    int count = 100 + i * 10;
+            //    List<int> list = new List<int>();
+            //    for (int j = 0; j < count; j++)
+            //    {
+            //        list.Add(rand.Next(100));
+            //    }
+            //    list.Sort();
+            //}
+            //sw.Stop();
+            //Console.WriteLine("{0, -20}:{1}", "Sort", sw.Elapsed);
             Console.ReadLine();
-        }
-
-        static string RSAPublicKeyCSharpToJava(RsaKeyParameters rkp)
-        {
-            SubjectPublicKeyInfo spki = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(rkp);
-            return spki.ToAsn1Object().GetDerEncoded().ToBase64String();
-        }
-
-        static string RSAPrivateKeyCSharpToJava(RsaKeyParameters rkp)
-        {
-            PrivateKeyInfo pki = PrivateKeyInfoFactory.CreatePrivateKeyInfo(rkp);
-            return pki.ToAsn1Object().GetEncoded().ToBase64String();
         }
 
         static SRSystem GetSRSystem()
