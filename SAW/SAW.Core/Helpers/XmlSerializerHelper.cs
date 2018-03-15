@@ -19,13 +19,13 @@ namespace SAW.Core.Helpers
         /// <typeparam name="T"></typeparam>  
         /// <param name="xmlObj"></param>  
         /// <returns></returns>  
-        public static T DeserializeXML<T>(string xmlObj) where T : class, new()
+        public static T DeserializeXML<T>(string xmlObj)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
             T result;
             using (StringReader sr = new StringReader(xmlObj))
             {
-                result = serializer.Deserialize(sr) as T;
+                result = (T)serializer.Deserialize(sr);
             }
             return result;
         }

@@ -125,6 +125,9 @@ namespace SAW.ConsoleApp
             //}
             //sw.Stop();
             //Console.WriteLine("{0, -20}:{1}", "Sort", sw.Elapsed);
+            RSAHelper helper1 = RSAHelper.Default;
+            string publicKey1 = helper1.ExportJavaParameters(false);
+            string privateKey1 = helper1.ExportJavaParameters(true);
             Console.ReadLine();
         }
 

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using SAW.Core.Extensions;
+using SAW.Core.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +14,17 @@ namespace SAW.WebApplication.Controllers
     {
         public ActionResult Index()
         {
+            ViewData["PublicKey"] = RSAHelper.Default.ExportJavaParameters(false);
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Test(string text)
+        {
+            string result = RSAHelper.Default.Decrypt(text.FromBase64String(), false).ToUTF8String();
+            LoginInfo li = JsonConvert.DeserializeObject<LoginInfo>(result);
+            li.Time = li.Time.ToLocalTime();
+            return Json(result, JsonRequestBehavior.DenyGet);
         }
 
         public ActionResult About()
@@ -76,5 +89,12 @@ namespace SAW.WebApplication.Controllers
         {
             return View();
         }
+    }
+
+    class LoginInfo
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public DateTime Time { get; set; }
     }
 }
