@@ -4,6 +4,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.X509;
+using SAW.Core.CryptoTransverters;
 using SAW.Core.Extensions;
 using SAW.Core.Helpers;
 using System;
@@ -125,9 +126,7 @@ namespace SAW.ConsoleApp
             //}
             //sw.Stop();
             //Console.WriteLine("{0, -20}:{1}", "Sort", sw.Elapsed);
-            RSAHelper helper1 = RSAHelper.Default;
-            string publicKey1 = helper1.ExportJavaParameters(false);
-            string privateKey1 = helper1.ExportJavaParameters(true);
+            
             Console.ReadLine();
         }
 

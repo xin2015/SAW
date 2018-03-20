@@ -1,6 +1,7 @@
 ﻿using SAW.Core.Extensions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -96,10 +97,11 @@ namespace SAW.Core.CryptoTransverters
                 else
                 {
                     List<byte> list = new List<byte>();
-                    while (inputBuffer.Any())
+                    MemoryStream ms = new MemoryStream(inputBuffer);
+                    byte[] buffer = new byte[EncryptCount];
+                    while (ms.Read(buffer, 0, EncryptCount) > 0)
                     {
-                        list.AddRange(RSA.Encrypt(inputBuffer.Take(EncryptCount).ToArray(), false));
-                        inputBuffer = inputBuffer.Skip(EncryptCount).ToArray();
+                        list.AddRange(RSACSP.Encrypt(buffer, false));
                     }
                     return list.ToArray();
                 }
@@ -132,10 +134,11 @@ namespace SAW.Core.CryptoTransverters
             else
             {
                 List<byte> list = new List<byte>();
-                while (inputBuffer.Any())
+                MemoryStream ms = new MemoryStream(inputBuffer);
+                byte[] buffer = new byte[EncryptCount];
+                while (ms.Read(buffer, 0, EncryptCount) > 0)
                 {
-                    list.AddRange(RSACSP.Encrypt(inputBuffer.Take(EncryptCount).ToArray(), false));
-                    inputBuffer = inputBuffer.Skip(EncryptCount).ToArray();
+                    list.AddRange(RSACSP.Encrypt(buffer, false));
                 }
                 return list.ToArray();
             }
@@ -195,10 +198,11 @@ namespace SAW.Core.CryptoTransverters
                 else
                 {
                     List<byte> list = new List<byte>();
-                    while (inputBuffer.Any())
+                    MemoryStream ms = new MemoryStream(inputBuffer);
+                    byte[] buffer = new byte[EncryptCount];
+                    while (ms.Read(buffer, 0, EncryptCount) > 0)
                     {
-                        list.AddRange(RSA.Decrypt(inputBuffer.Take(DecryptCount).ToArray(), false));
-                        inputBuffer = inputBuffer.Skip(DecryptCount).ToArray();
+                        list.AddRange(RSACSP.Decrypt(buffer, false));
                     }
                     return list.ToArray();
                 }
@@ -231,10 +235,11 @@ namespace SAW.Core.CryptoTransverters
             else
             {
                 List<byte> list = new List<byte>();
-                while (inputBuffer.Any())
+                MemoryStream ms = new MemoryStream(inputBuffer);
+                byte[] buffer = new byte[EncryptCount];
+                while (ms.Read(buffer, 0, EncryptCount) > 0)
                 {
-                    list.AddRange(RSACSP.Decrypt(inputBuffer.Take(DecryptCount).ToArray(), false));
-                    inputBuffer = inputBuffer.Skip(DecryptCount).ToArray();
+                    list.AddRange(RSACSP.Decrypt(buffer, false));
                 }
                 return list.ToArray();
             }
