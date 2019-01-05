@@ -89,6 +89,11 @@ namespace SAW.WebApplication.Controllers
         {
             return View();
         }
+
+        public ActionResult TestTDT()
+        {
+            return View();
+        }
     }
 
     class LoginInfo
