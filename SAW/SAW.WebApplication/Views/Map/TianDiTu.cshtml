@@ -31,13 +31,18 @@
             //map = new T.Map("mapDiv", { projection: "EPSG:900913" });
             map = new T.Map("mapDiv", { projection: "EPSG:4326" });
             //设置显示地图的中心点和级别
-            map.centerAndZoom(new T.LngLat(116.40969, 39.89945), zoom);
+            map.centerAndZoom(new T.LngLat(111.653718, 29.012149), zoom);
             //允许鼠标滚轮缩放地图
             map.enableScrollWheelZoom();
+            //创建对象
+            var ctrl = new T.Control.MapType();
+            //添加控件
+            map.addControl(ctrl);
 
-            var imageURL = "http://t0.tianditu.gov.cn/img_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}";
+            //var imageURL = "http://t0.tianditu.gov.cn/img_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}";
+            var imageURL = "http://218.75.139.76/NServiceAdapter/MAP/常德市矢量电子地图/c4bbb11caa626f1a049af6a477deb366?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=CDMap_2018&STYLE=default&TILEMATRIXSET=default028mm&FORMAT=image/jpgpng&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}";
             //创建自定义图层对象
-            var lay = new T.TileLayer(imageURL, { minZoom: 1, maxZoom: 18, opacity: 0.7 });
+            var lay = new T.TileLayer(imageURL, { minZoom: 8, maxZoom: 20 });
             //将图层增加到地图上
             map.addLayer(lay);
         }

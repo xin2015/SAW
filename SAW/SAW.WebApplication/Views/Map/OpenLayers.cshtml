@@ -1,0 +1,98 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="OpenLayers" />
+    <title>OpenLayers</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css">
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+    <style type="text/css">
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "Microsoft YaHei"
+        }
+
+        #mapDiv {
+            width: 100%;
+            height: 100%
+        }
+    </style>
+    <script type="text/javascript">
+        var map;
+        var zoom = 12;
+        function onLoad() {
+            var projection = ol.proj.get('EPSG:4326');
+            var projectionExtent = projection.getExtent();
+            console.log(ol.extent.getTopLeft(projectionExtent));
+            var size = ol.extent.getWidth(projectionExtent) / 256;
+            console.log(size);
+            var resolutions = new Array(21);
+            var matrixIds = new Array(21);
+            for (var z = 0; z < 21; ++z) {
+                // generate resolutions and matrixIds arrays for this WMTS
+                resolutions[z] = size / Math.pow(2, z);
+                matrixIds[z] = z;
+            }
+            map = new ol.Map({
+                layers: [
+                    //new ol.layer.Tile({
+                    //    source: new ol.source.WMTS({
+                    //        name: "常德市矢量电子地图",
+                    //        url: "http://218.75.139.76/NServiceAdapter/MAP/%E5%B8%B8%E5%BE%B7%E5%B8%82%E7%9F%A2%E9%87%8F%E7%94%B5%E5%AD%90%E5%9C%B0%E5%9B%BE/c4bbb11caa626f1a049af6a477deb366",
+                    //        layer: "CDMap_2018",
+                    //        style: "default",
+                    //        matrixSet: "default028mm",
+                    //        format: "image/jpgpng",
+                    //        wrapX: true,
+                    //        tileGrid: new ol.tilegrid.WMTS({
+                    //            origin: ol.extent.getTopLeft(projectionExtent),
+                    //            resolutions: resolutions.slice(0),
+                    //            matrixIds: matrixIds.slice(0)
+                    //        })
+                    //    }),
+                    //    maxResolution: resolutions[0],
+                    //    minResolution: resolutions[20]
+                    //}),
+                    new ol.layer.Tile({
+                        source: new ol.source.WMTS({
+                            name: "天地图全国矢量电子地图",
+                            url: "http://t0.tianditu.gov.cn/vec_c/wmts",
+                            layer: "vec",
+                            style: "default",
+                            matrixSet: "c",
+                            format: "tiles",
+                            wrapX: true,
+                            tileGrid: new ol.tilegrid.WMTS({
+                                origin: ol.extent.getTopLeft(projectionExtent),
+                                resolutions: resolutions.slice(0),
+                                matrixIds: matrixIds.slice(0)
+                            })
+                        }),
+                        maxResolution: resolutions[0],
+                        minResolution: resolutions[20]
+                    })
+                ],
+                target: 'mapDiv',
+                view: new ol.View({
+                    projection: projection,
+                    center: [111.653718, 29.012149],
+                    //center: [-180, 90],
+                    zoom: zoom,
+                    maxZoom: 20,
+                    minZoom: 0
+                })
+            });
+        }
+    </script>
+</head>
+<body onLoad="onLoad()">
+    <div id="mapDiv"></div>
+</body>
+</html>
