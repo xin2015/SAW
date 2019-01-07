@@ -25,69 +25,176 @@
         }
     </style>
     <script type="text/javascript">
+        var projection = ol.proj.get('EPSG:4326');
+        var projectionExtent = projection.getExtent();
+        var size = ol.extent.getWidth(projectionExtent) / 256;
+        var maxZoom = 20;
+        var matrixIds = [];
+        var resolutions = [];
+        for (var i = 0; i <= maxZoom; i++) {
+            matrixIds[i] = [i];
+            resolutions[i] = size / Math.pow(2, i);
+        }
         var map;
+        var mapType = "default";
+        var center = [111.653718, 29.012149];
         var zoom = 12;
-        function onLoad() {
-            var projection = ol.proj.get('EPSG:4326');
-            var projectionExtent = projection.getExtent();
-            console.log(ol.extent.getTopLeft(projectionExtent));
-            var size = ol.extent.getWidth(projectionExtent) / 256;
-            console.log(size);
-            var resolutions = new Array(21);
-            var matrixIds = new Array(21);
-            for (var z = 0; z < 21; ++z) {
-                // generate resolutions and matrixIds arrays for this WMTS
-                resolutions[z] = size / Math.pow(2, z);
-                matrixIds[z] = z;
-            }
-            map = new ol.Map({
-                layers: [
-                    //new ol.layer.Tile({
-                    //    source: new ol.source.WMTS({
-                    //        name: "常德市矢量电子地图",
-                    //        url: "http://218.75.139.76/NServiceAdapter/MAP/%E5%B8%B8%E5%BE%B7%E5%B8%82%E7%9F%A2%E9%87%8F%E7%94%B5%E5%AD%90%E5%9C%B0%E5%9B%BE/c4bbb11caa626f1a049af6a477deb366",
-                    //        layer: "CDMap_2018",
-                    //        style: "default",
-                    //        matrixSet: "default028mm",
-                    //        format: "image/jpgpng",
-                    //        wrapX: true,
-                    //        tileGrid: new ol.tilegrid.WMTS({
-                    //            origin: ol.extent.getTopLeft(projectionExtent),
-                    //            resolutions: resolutions.slice(0),
-                    //            matrixIds: matrixIds.slice(0)
-                    //        })
-                    //    }),
-                    //    maxResolution: resolutions[0],
-                    //    minResolution: resolutions[20]
-                    //}),
-                    new ol.layer.Tile({
-                        source: new ol.source.WMTS({
-                            name: "天地图全国矢量电子地图",
-                            url: "http://t0.tianditu.gov.cn/vec_c/wmts",
-                            layer: "vec",
-                            style: "default",
-                            matrixSet: "c",
-                            format: "tiles",
-                            wrapX: true,
-                            tileGrid: new ol.tilegrid.WMTS({
-                                origin: ol.extent.getTopLeft(projectionExtent),
-                                resolutions: resolutions.slice(0),
-                                matrixIds: matrixIds.slice(0)
-                            })
-                        }),
-                        maxResolution: resolutions[0],
-                        minResolution: resolutions[20]
+        var layers = [];
+
+        function getLayers() {
+            layers[0] = new ol.layer.Tile({
+                source: new ol.source.WMTS({
+                    name: "天地图全国矢量电子地图底图",
+                    url: "http://t0.tianditu.gov.cn/vec_c/wmts",
+                    layer: "vec",
+                    style: "default",
+                    matrixSet: "c",
+                    format: "tiles",
+                    wrapX: true,
+                    tileGrid: new ol.tilegrid.WMTS({
+                        origin: ol.extent.getTopLeft(projectionExtent),
+                        resolutions: resolutions.slice(1, 19),
+                        matrixIds: matrixIds.slice(1, 19)
                     })
-                ],
+                })
+            });
+            layers[1] = new ol.layer.Tile({
+                source: new ol.source.WMTS({
+                    name: "天地图全国矢量电子地图注记",
+                    url: "http://t0.tianditu.gov.cn/cva_c/wmts",
+                    layer: "cva",
+                    style: "default",
+                    matrixSet: "c",
+                    format: "tiles",
+                    wrapX: true,
+                    tileGrid: new ol.tilegrid.WMTS({
+                        origin: ol.extent.getTopLeft(projectionExtent),
+                        resolutions: resolutions.slice(1, 19),
+                        matrixIds: matrixIds.slice(1, 19)
+                    })
+                })
+            });
+            layers[2] = new ol.layer.Tile({
+                source: new ol.source.WMTS({
+                    name: "常德市矢量电子地图",
+                    url: "http://218.75.139.76/NServiceAdapter/MAP/%E5%B8%B8%E5%BE%B7%E5%B8%82%E7%9F%A2%E9%87%8F%E7%94%B5%E5%AD%90%E5%9C%B0%E5%9B%BE/c4bbb11caa626f1a049af6a477deb366",
+                    layer: "CDMap_2018",
+                    style: "default",
+                    matrixSet: "default028mm",
+                    format: "image/jpgpng",
+                    wrapX: true,
+                    tileGrid: new ol.tilegrid.WMTS({
+                        origin: ol.extent.getTopLeft(projectionExtent),
+                        resolutions: resolutions.slice(8),
+                        matrixIds: matrixIds.slice(8)
+                    })
+                }),
+                maxResolution: resolutions[7]
+            });
+            layers[3] = new ol.layer.Tile({
+                source: new ol.source.WMTS({
+                    name: "天地图全国影像电子地图底图",
+                    url: "http://t0.tianditu.gov.cn/img_c/wmts",
+                    layer: "img",
+                    style: "default",
+                    matrixSet: "c",
+                    format: "tiles",
+                    wrapX: true,
+                    tileGrid: new ol.tilegrid.WMTS({
+                        origin: ol.extent.getTopLeft(projectionExtent),
+                        resolutions: resolutions.slice(1, 19),
+                        matrixIds: matrixIds.slice(1, 19)
+                    })
+                })
+            });
+            layers[4] = new ol.layer.Tile({
+                source: new ol.source.WMTS({
+                    name: "天地图全国影像电子地图注记",
+                    url: "http://t0.tianditu.gov.cn/cia_c/wmts",
+                    layer: "cia",
+                    style: "default",
+                    matrixSet: "c",
+                    format: "tiles",
+                    wrapX: true,
+                    tileGrid: new ol.tilegrid.WMTS({
+                        origin: ol.extent.getTopLeft(projectionExtent),
+                        resolutions: resolutions.slice(1, 19),
+                        matrixIds: matrixIds.slice(1, 19)
+                    })
+                })
+            });
+            layers[5] = new ol.layer.Tile({
+                source: new ol.source.WMTS({
+                    name: "常德市影像电子地图",
+                    url: "http://218.75.139.76/NServiceAdapter/MAP/%E5%B8%B8%E5%BE%B7%E5%B8%822017%E5%B9%B4%E5%BD%B1%E5%83%8F%E7%94%B5%E5%AD%90%E5%9C%B0%E5%9B%BE/c4bbb11caa626f1a049af6a477deb366",
+                    layer: "CDTDT_RasterMap_2017",
+                    style: "default",
+                    matrixSet: "default028mm",
+                    format: "image/png",
+                    wrapX: true,
+                    tileGrid: new ol.tilegrid.WMTS({
+                        origin: ol.extent.getTopLeft(projectionExtent),
+                        resolutions: resolutions.slice(8),
+                        matrixIds: matrixIds.slice(8)
+                    })
+                }),
+                maxResolution: resolutions[7]
+            });
+        }
+
+        function clearLayers() {
+            var mLayers = map.getLayers().a;
+            var length = mLayers.length;
+            for (var i = 0; i < length; i++) {
+                map.removeLayer(mLayers[0]);
+            }
+        }
+
+        function switchMap() {
+            clearLayers();
+            if (mapType == "default") {
+                mapType = "";
+                map.addLayer(layers[3]);
+                map.addLayer(layers[4]);
+            } else {
+                mapType = "default";
+                map.addLayer(layers[0]);
+                map.addLayer(layers[1]);
+            }
+            map.addLayer(imageLayer);
+        }
+
+        var TypeSwitchMapControl = function (opt_options) {
+            var button = document.createElement("button");
+            button.style.position = "absolute";
+            button.style.top = "10px";
+            button.style.right = "10px";
+            button.innerHTML = "切换";
+
+            ol.control.Control.call(this, {
+                element: button
+            });
+
+            button.addEventListener('click', switchMap, false);
+        }
+        ol.inherits(TypeSwitchMapControl, ol.control.Control);
+
+        function onLoad() {
+            getLayers();
+
+            map = new ol.Map({
+                layers: layers.slice(0, 2),
                 target: 'mapDiv',
                 view: new ol.View({
                     projection: projection,
-                    center: [111.653718, 29.012149],
-                    //center: [-180, 90],
+                    center: center,
                     zoom: zoom,
-                    maxZoom: 20,
+                    maxZoom: maxZoom,
                     minZoom: 0
-                })
+                }),
+                controls: ol.control.defaults({ attribution: false }).extend([
+                    new TypeSwitchMapControl()
+                ])
             });
         }
     </script>

@@ -203,6 +203,8 @@
     <Content Include="Views\Map\OpenLayers.cshtml" />
     <Content Include="Views\Map\Index.cshtml" />
     <Content Include="Views\Map\BaiDu.cshtml" />
+    <Content Include="Views\Map\OpenLayersIndex.cshtml" />
+    <Content Include="Views\Map\OpenLayersBingMaps.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

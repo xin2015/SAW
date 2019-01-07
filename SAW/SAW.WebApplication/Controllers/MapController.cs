@@ -18,10 +18,22 @@ namespace SAW.WebApplication.Controllers
             return View();
         }
 
+        #region OpenLayers
         public ActionResult OpenLayers()
         {
             return View();
         }
+
+        public ActionResult OpenLayersIndex()
+        {
+            return View();
+        }
+
+        public ActionResult OpenLayersBingMaps()
+        {
+            return View();
+        }
+        #endregion
 
         public ActionResult BaiDu()
         {
