@@ -186,7 +186,7 @@
                 layers: layers.slice(0, 2),
                 target: 'mapDiv',
                 view: new ol.View({
-                    projection: projection,
+                    projection: ol.proj.get('EPSG:3857'),
                     center: center,
                     zoom: zoom,
                     maxZoom: maxZoom,

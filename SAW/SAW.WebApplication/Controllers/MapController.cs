@@ -33,6 +33,11 @@ namespace SAW.WebApplication.Controllers
         {
             return View();
         }
+
+        public ActionResult OpenLayersRasterReprojection()
+        {
+            return View();
+        }
         #endregion
 
         public ActionResult BaiDu()

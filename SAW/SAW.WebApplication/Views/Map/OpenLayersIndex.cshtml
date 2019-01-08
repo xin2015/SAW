@@ -8,7 +8,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="OpenLayers" />
-    <title>OpenLayers</title>
+    <title>OpenLayersIndex</title>
     <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css">
     <style type="text/css">
         body, html {
@@ -18,25 +18,46 @@
             font-family: "Microsoft YaHei"
         }
 
-        #mapDiv {
+        #mapDiv1 {
             width: 100%;
-            height: 100%
+            height: 50%
+        }
+
+        #mapDiv2 {
+            width: 100%;
+            height: 50%
         }
     </style>
 </head>
 <body>
-    <div id="mapDiv"></div>
+    <div id="mapDiv1"></div>
+    <div id="mapDiv2"></div>
     <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
     <script type="text/javascript">
-        var map = new ol.Map({
-            target: 'mapDiv',
+        var map1 = new ol.Map({
+            target: 'mapDiv1',
             layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM()
                 })
             ],
             view: new ol.View({
+                projection: ol.proj.get('EPSG:3857'),
                 center: ol.proj.fromLonLat([113.30765, 23.120049]),
+                zoom: 12
+            })
+        });
+
+        var map2 = new ol.Map({
+            target: 'mapDiv2',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                })
+            ],
+            view: new ol.View({
+                projection: ol.proj.get('EPSG:4326'),
+                center: [113.30765, 23.120049],
                 zoom: 12
             })
         });
