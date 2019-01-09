@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>tilelayerpublicxyzoomHTML</title>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <style type='text/css'>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI',Helvetica,Arial,Sans-Serif
+        }
+    </style>
+</head>
+<body>
+    <div id='printoutPanel'></div>
+    <div id='myMap' style='width: 100vw; height: 100vh;'></div>
+    <script type='text/javascript' src='https://cn.bing.com/api/maps/mapcontrol?key=As1HiMj1PvLPlqc_gtM7AqZfBL8ZL3VrjaS3zIb22Uvb9WKhuJObROC-qUpa81U5&callback=loadMapScenario' async defer></script>
+    <script type='text/javascript'>
+        function loadMapScenario() {
+            var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+                /* No need to set credentials if already passed in URL */
+                center: new Microsoft.Maps.Location(40.750220, -99.476964),
+                zoom: 4
+            });
+            // weather radar tiles from Iowa Environmental Mesonet of Iowa State University
+            var weatherTileSource = new Microsoft.Maps.TileSource({
+                uriConstructor: 'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{zoom}/{x}/{y}.png'
+            });
+            var weatherTileLayer = new Microsoft.Maps.TileLayer({
+                mercator: weatherTileSource,
+            });
+            map.layers.insert(weatherTileLayer);
+
+        }
+    </script>
+</body>
+</html>

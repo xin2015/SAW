@@ -44,5 +44,17 @@ namespace SAW.WebApplication.Controllers
         {
             return View();
         }
+
+        #region BingMaps
+        public ActionResult BingMaps()
+        {
+            return View();
+        }
+
+        public ActionResult BingMapsXYZoom()
+        {
+            return View();
+        }
+        #endregion
     }
 }

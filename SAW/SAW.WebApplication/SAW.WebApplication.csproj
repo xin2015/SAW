@@ -206,6 +206,8 @@
     <Content Include="Views\Map\OpenLayersIndex.cshtml" />
     <Content Include="Views\Map\OpenLayersBingMaps.cshtml" />
     <Content Include="Views\Map\OpenLayersRasterReprojection.cshtml" />
+    <Content Include="Views\Map\BingMaps.cshtml" />
+    <Content Include="Views\Map\BingMapsXYZoom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
