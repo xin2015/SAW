@@ -1,0 +1,73 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="OpenLayers" />
+    <title>OpenLayersIndex</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css">
+</head>
+<body>
+    <div id="map" class="map"></div>
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+    <script type="text/javascript">
+        var osm = new ol.layer.Tile({
+            source: new ol.source.OSM()
+        });
+
+        var layers = [
+            osm,
+            new ol.layer.Tile({
+                extent: [-13884991, 2870341, -7455066, 6338219],
+                source: new ol.source.TileWMS({
+                    url: 'https://ahocevar.com/geoserver/wms',
+                    params: { 'LAYERS': 'topp:states', 'TILED': true },
+                    serverType: 'geoserver',
+                    // Countries have transparency, so do not fade tiles:
+                    transition: 0
+                })
+            })
+        ];
+
+        var map = new ol.Map({
+            layers: layers,
+            target: 'map',
+            view: new ol.View({
+                center: [-10997148, 4569099],
+                zoom: 4
+            })
+        });
+
+        osm.on('precompose', function (event) {
+            var ctx = event.context;
+            ctx.save();
+            var pixelRatio = event.frameState.pixelRatio;
+            var size = map.getSize();
+            ctx.translate(size[0] / 2 * pixelRatio, size[1] / 2 * pixelRatio);
+            ctx.scale(3 * pixelRatio, 3 * pixelRatio);
+            ctx.translate(-75, -80);
+            ctx.beginPath();
+            ctx.moveTo(75, 40);
+            ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
+            ctx.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+            ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
+            ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+            ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+            ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
+            ctx.clip();
+            ctx.translate(75, 80);
+            ctx.scale(1 / 3 / pixelRatio, 1 / 3 / pixelRatio);
+            ctx.translate(-size[0] / 2 * pixelRatio, -size[1] / 2 * pixelRatio);
+        });
+
+        osm.on('postcompose', function (event) {
+            var ctx = event.context;
+            ctx.restore();
+        });
+    </script>
+</body>
+</html>

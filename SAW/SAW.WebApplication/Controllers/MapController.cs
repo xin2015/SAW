@@ -38,6 +38,11 @@ namespace SAW.WebApplication.Controllers
         {
             return View();
         }
+
+        public ActionResult LayerClipping()
+        {
+            return View();
+        }
         #endregion
 
         public ActionResult BaiDu()

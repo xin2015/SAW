@@ -14,7 +14,6 @@ namespace SAW.WebApplication.Controllers
     {
         public ActionResult Index()
         {
-            ViewData["PublicKey"] = RSAHelper.Default.ExportJavaParameters(false);
             return View();
         }
 
