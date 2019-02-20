@@ -11,7 +11,7 @@
     <title>OpenLayers</title>
     <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css">
     <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
-    <script src="jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <style type="text/css">
         body, html {
             width: 100%;
@@ -43,7 +43,7 @@
             resolutions[i] = size / Math.pow(2, i);
         }
         var layers = [];
-        var imageExtent = [86, 16, 143, 58];
+        var imageExtent = [61, 11, 152, 57];
 
         function initLayers() {
             layers[0] = new ol.layer.Tile({
@@ -112,7 +112,7 @@
             });
             layers[4] = new ol.layer.Image({
                 source: new ol.source.ImageStatic({
-                    url: 'temp.png',
+                    url: 'https://graph.zq12369.cn/NO2/hour/CUACE_09km_NO2_station_2019-02-20%2023:00:00.png',
                     projection: projection,
                     imageExtent: imageExtent
                 }),
