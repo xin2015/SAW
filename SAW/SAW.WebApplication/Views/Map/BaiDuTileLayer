@@ -34,17 +34,33 @@
         }));
         map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
 
+        var centerTileCoord = null;
+        var newCenterTileCoord = null;
         var tileLayer = new BMap.TileLayer();
         tileLayer.getTilesUrl = function (tileCoord, zoom) {
-            var projection = new BMap.MercatorProjection();
-            var scale = Math.pow(2, 18 - zoom) * 256;
-            var point = projection.pointToLngLat({ x: tileCoord.x * scale, y: tileCoord.y * scale });
-            var resolution = 360 / Math.pow(2, zoom);
-            var x = Math.round((point.lng + 180) / resolution);
-            var y = Math.round((90 - point.lat) / resolution);
-            var url = "http://t0.tianditu.gov.cn/vec_c/wmts?&tk=fdcab2d88e293c189daf038cd01592e6&layer=vec&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix=" + zoom + "&TileCol=" + x + "&TileRow=" + y;
+
+            if (centerTileCoord == null) {
+                centerTileCoord = tileCoord;
+                var projection = new BMap.MercatorProjection();
+                var scale = Math.pow(2, 18 - zoom) * 256;
+                var point = projection.pointToLngLat({ x: tileCoord.x * scale, y: tileCoord.y * scale });
+                var resolution = 360 / Math.pow(2, zoom);
+                var x = Math.round((point.lng + 180) / resolution);
+                var y = Math.round((90 - point.lat) / resolution);
+                newCenterTileCoord = { x: x, y: y };
+            }
+
+            var x = tileCoord.x - centerTileCoord.x + newCenterTileCoord.x;
+            var y = centerTileCoord.y - tileCoord.y + newCenterTileCoord.y;
+
+            var url = "http://t0.tianditu.gov.cn/vec_c/wmts?&tk=fdcab2d88e293c189daf038cd01592e6&Service=WMTS&Request=GetTile&Version=1.0.0&layer=vec&style=default&tilematrixset=c&Format=tiles&TileMatrix=" + zoom + "&TileCol=" + x + "&TileRow=" + y;
             return url;
         }
+
+        map.addEventListener("zoomstart", function () {
+            centerTileCoord = null;
+        });
+        
         function add_control() {
             map.addTileLayer(tileLayer);
         }
