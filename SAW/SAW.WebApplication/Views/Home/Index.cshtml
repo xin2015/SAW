@@ -30,31 +30,3 @@
     </div>
 </div>
 
-@section scripts{
-    <script src="~/Scripts/jsencrypt.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var publicKey = "@ViewData["PublicKey"]";
-            var encrypt = new JSEncrypt();
-            encrypt.setPublicKey(publicKey);
-            var info = {
-                UserName: "admin",
-                Password: "123456",
-                Time: new Date()
-            }
-            var text = JSON.stringify(info);
-            var cipher = encrypt.encrypt(text);
-            console.log(cipher);
-
-            $.ajax({
-                url: '/Home/Test',
-                type: 'POST',
-                data: { text: cipher }
-            }).done(function (result) {
-                if (result) {
-                    alert(result);
-                }
-            });
-        })
-    </script>
-}

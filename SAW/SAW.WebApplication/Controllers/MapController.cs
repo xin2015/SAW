@@ -45,10 +45,22 @@ namespace SAW.WebApplication.Controllers
         }
         #endregion
 
+        #region BMap
         public ActionResult BaiDu()
         {
             return View();
         }
+
+        public ActionResult BaiDuTileLayer()
+        {
+            return View();
+        }
+
+        public ActionResult BaiDuTileLayerTianDiTu()
+        {
+            return View();
+        }
+        #endregion
 
         #region BingMaps
         public ActionResult BingMaps()

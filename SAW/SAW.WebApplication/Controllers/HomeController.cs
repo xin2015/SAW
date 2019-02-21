@@ -17,6 +17,11 @@ namespace SAW.WebApplication.Controllers
             return View();
         }
 
+        public ActionResult Test()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Test(string text)
         {
