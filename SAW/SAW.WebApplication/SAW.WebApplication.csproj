@@ -212,6 +212,7 @@
     <Content Include="Views\Home\Test.cshtml" />
     <None Include="Views\Map\BaiDuTileLayer.cshtml" />
     <None Include="Views\Map\BaiDuTileLayerTianDiTu.cshtml" />
+    <Content Include="Views\Map\OpenLayersBMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

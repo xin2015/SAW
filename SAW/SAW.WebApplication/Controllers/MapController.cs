@@ -43,6 +43,11 @@ namespace SAW.WebApplication.Controllers
         {
             return View();
         }
+
+        public ActionResult OpenLayersBMap()
+        {
+            return View();
+        }
         #endregion
 
         #region BMap
