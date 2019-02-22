@@ -42,10 +42,10 @@
             resolutions: resolutions,
             minZoom: 3
         });
+        var scale = resolutions[0] / Math.pow(2, 18);
         var center = ol.proj.transform([116.404, 39.915], 'EPSG:4326', 'EPSG:3857');
-        var zoom = 12;
-        var scale = resolutions[zoom] / Math.pow(2, 18 - zoom);
         center = [center[0] * scale, center[1] * scale];
+        var zoom = 12;
 
         var map = new ol.Map({
             target: 'allmap',
@@ -73,6 +73,11 @@
                 center: center,
                 zoom: zoom,
             })
+        });
+
+        map.on("click", function (a, b, c) {
+            var coordinate = [a.coordinate[0] / scale, a.coordinate[1] / scale];
+            alert(ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326'));
         });
     </script>
 </body>
