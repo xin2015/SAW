@@ -6,75 +6,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="OpenLayers" />
-    <title>OpenLayersBMap</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>OpenLayersTest</title>
     <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css">
-    <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
     <style type="text/css">
         body, html {
             width: 100%;
             height: 100%;
+            overflow: hidden;
             margin: 0;
-            font-family: "Microsoft YaHei"
+            font-family: "微软雅黑";
         }
 
-        #mapDiv {
+        #allmap {
             width: 100%;
-            height: 100%
+            height: 100%;
         }
     </style>
-    <script type="text/javascript">
-        function onLoad() {
-            var resolutions = [];
-            var maxZoom = 18;
-            var minZoom = 3;
-            for (var i = 0; i <= maxZoom; i++) {
-                resolutions[i] = Math.pow(2, maxZoom - i);
-            }
-
-            var tileGrid = new ol.tilegrid.TileGrid({
-                origin: [0, 0], // 设置原点坐标
-                resolutions: resolutions // 设置分辨率
-            });
-
-            var map = new ol.Map({
-                target: 'mapDiv',
-                layers: [
-                    new ol.layer.Tile({
-                        source: new ol.source.XYZ({
-                            maxZoom: maxZoom,
-                            minZoom: minZoom,
-                            tileGrid: tileGrid,
-                            tileUrlFunction: function (tileCoord) {
-                                var z = tileCoord[0];
-                                var x = tileCoord[1];
-                                var y = tileCoord[2];
-
-                                // 百度瓦片服务url将负数使用M前缀来标识
-                                if (x < 0) {
-                                    x = 'M' + (-x);
-                                }
-                                if (y < 0) {
-                                    y = 'M' + (-y);
-                                }
-
-                                return "http://online" + parseInt(Math.random() * 10) + ".map.bdimg.com/tile/?qt=vtile&x=" + x + "&y=" + y + "&z=" + z + "&styles=pl&scaler=1&udt=20190125"
-                            }
-                        })
-                    })
-                ],
-                view: new ol.View({
-                    center: [0, 0],
-                    zoom: 2,
-                    maxZoom: maxZoom,
-                    minZoom: minZoom-1
-                })
-            });
-        }
-    </script>
 </head>
-<body onLoad="onLoad()">
-    <div id="mapDiv"></div>
+<body>
+    <div id="allmap"></div>
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+    <script type="text/javascript">
+        var projection = ol.proj.get('EPSG:3857');
+        var projectionExtent = projection.getExtent();
+        var size = ol.extent.getWidth(projectionExtent) / 256;
+        var maxZoom = 20;
+        var resolutions = [];
+        for (var i = 0; i <= maxZoom; i++) {
+            resolutions[i] = size / Math.pow(2, i);
+        }
+        var tileGrid = new ol.tilegrid.TileGrid({
+            origin: [-84, 16526],
+            resolutions: resolutions,
+            minZoom: 3
+        });
+        var center = ol.proj.transform([116.404, 39.915], 'EPSG:4326', 'EPSG:3857');
+        var zoom = 12;
+        var scale = resolutions[zoom] / Math.pow(2, 18 - zoom);
+        center = [center[0] * scale, center[1] * scale];
+
+        var map = new ol.Map({
+            target: 'allmap',
+            layers: [
+              new ol.layer.Tile({
+                  source: new ol.source.XYZ({
+                      tileUrlFunction: function (tileCoord) {
+                          var z = tileCoord[0];
+                          var x = tileCoord[1];
+                          var y = tileCoord[2];
+                          // 百度瓦片服务url将负数使用M前缀来标识
+                          if (x < 0) {
+                              x = 'M' + (-x);
+                          }
+                          if (y < 0) {
+                              y = 'M' + (-y);
+                          }
+                          return "http://online" + parseInt(Math.random() * 10) + ".map.bdimg.com/tile/?qt=vtile&x=" + x + "&y=" + y + "&z=" + z + "&styles=pl&scaler=1&udt=20190125"
+                      },
+                      tileGrid: tileGrid
+                  })
+              })
+            ],
+            view: new ol.View({
+                center: center,
+                zoom: zoom,
+            })
+        });
+    </script>
 </body>
 </html>
