@@ -45,33 +45,33 @@
         var scale = resolutions[0] / Math.pow(2, 18);
         var center = ol.proj.transform([116.404, 39.915], 'EPSG:4326', 'EPSG:3857');
         center = [center[0] * scale, center[1] * scale];
-        var zoom = 12;
+        var zoom = 18;
 
         var map = new ol.Map({
             target: 'allmap',
             layers: [
-              new ol.layer.Tile({
-                  source: new ol.source.XYZ({
-                      tileUrlFunction: function (tileCoord) {
-                          var z = tileCoord[0];
-                          var x = tileCoord[1];
-                          var y = tileCoord[2];
-                          // 百度瓦片服务url将负数使用M前缀来标识
-                          if (x < 0) {
-                              x = 'M' + (-x);
-                          }
-                          if (y < 0) {
-                              y = 'M' + (-y);
-                          }
-                          return "http://online" + parseInt(Math.random() * 10) + ".map.bdimg.com/tile/?qt=vtile&x=" + x + "&y=" + y + "&z=" + z + "&styles=pl&scaler=1&udt=20190125"
-                      },
-                      tileGrid: tileGrid
-                  })
-              })
+                new ol.layer.Tile({
+                    source: new ol.source.XYZ({
+                        tileUrlFunction: function (tileCoord) {
+                            var z = tileCoord[0];
+                            var x = tileCoord[1];
+                            var y = tileCoord[2];
+                            // 百度瓦片服务url将负数使用M前缀来标识
+                            if (x < 0) {
+                                x = 'M' + (-x);
+                            }
+                            if (y < 0) {
+                                y = 'M' + (-y);
+                            }
+                            return "http://online" + parseInt(Math.random() * 10) + ".map.bdimg.com/tile/?qt=vtile&x=" + x + "&y=" + y + "&z=" + z + "&styles=pl&scaler=1&udt=20190125"
+                        },
+                        tileGrid: tileGrid
+                    })
+                })
             ],
             view: new ol.View({
                 center: center,
-                zoom: zoom,
+                zoom: zoom
             })
         });
 

@@ -51,6 +51,11 @@ namespace SAW.WebApplication.Controllers
         #endregion
 
         #region BMap
+        public ActionResult BMap()
+        {
+            return View();
+        }
+
         public ActionResult BaiDu()
         {
             return View();
