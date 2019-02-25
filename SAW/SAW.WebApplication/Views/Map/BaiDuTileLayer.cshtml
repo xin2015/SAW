@@ -1,3 +1,7 @@
+﻿@{
+    Layout = null;
+}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,10 +21,10 @@
             height: 100%;
         }
     </style>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=jGMQOfDd4HEYBlqhfsZq4Hj6"></script>
 </head>
 <body>
     <div id="allmap"></div>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=jGMQOfDd4HEYBlqhfsZq4Hj6"></script>
     <script type="text/javascript">
         // 百度地图API功能
         var map = new BMap.Map("allmap");    // 创建Map实例
@@ -34,33 +38,29 @@
         }));
         map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
 
+        var scale = 0.5971642834779395;
         var centerTileCoord = null;
         var newCenterTileCoord = null;
         var tileLayer = new BMap.TileLayer();
         tileLayer.getTilesUrl = function (tileCoord, zoom) {
-
             if (centerTileCoord == null) {
                 centerTileCoord = tileCoord;
-                var projection = new BMap.MercatorProjection();
-                var scale = Math.pow(2, 18 - zoom) * 256;
-                var point = projection.pointToLngLat({ x: tileCoord.x * scale, y: tileCoord.y * scale });
-                var resolution = 360 / Math.pow(2, zoom);
-                var x = Math.round((point.lng + 180) / resolution);
-                var y = Math.round((90 - point.lat) / resolution);
+                var x = Math.round(tileCoord.x / scale) + Math.pow(2, zoom - 1);
+                var y = -Math.round(tileCoord.y / scale) + Math.pow(2, zoom - 1) - 1;
                 newCenterTileCoord = { x: x, y: y };
             }
 
             var x = tileCoord.x - centerTileCoord.x + newCenterTileCoord.x;
             var y = centerTileCoord.y - tileCoord.y + newCenterTileCoord.y;
 
-            var url = "http://t0.tianditu.gov.cn/vec_c/wmts?&tk=fdcab2d88e293c189daf038cd01592e6&Service=WMTS&Request=GetTile&Version=1.0.0&layer=vec&style=default&tilematrixset=c&Format=tiles&TileMatrix=" + zoom + "&TileCol=" + x + "&TileRow=" + y;
+            var url = "http://t0.tianditu.gov.cn/vec_w/wmts?&tk=fdcab2d88e293c189daf038cd01592e6&Service=WMTS&Request=GetTile&Version=1.0.0&layer=vec&style=default&tilematrixset=w&Format=tiles&TileMatrix=" + zoom + "&TileCol=" + x + "&TileRow=" + y;
             return url;
         }
 
         map.addEventListener("zoomstart", function () {
             centerTileCoord = null;
         });
-        
+
         function add_control() {
             map.addTileLayer(tileLayer);
         }
