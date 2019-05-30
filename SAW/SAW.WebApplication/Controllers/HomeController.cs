@@ -19,6 +19,7 @@ namespace SAW.WebApplication.Controllers
 
         public ActionResult Test()
         {
+            ViewData["PublicKey"] = RSAHelper.Default.ExportJavaParameters(false);
             return View();
         }
 
@@ -97,6 +98,47 @@ namespace SAW.WebApplication.Controllers
         public ActionResult TestTDT()
         {
             return View();
+        }
+
+        public ActionResult GetBrowserInfo()
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("Platform", Request.Browser.Platform);
+            dic.Add("Id", Request.Browser.Id);
+            dic.Add("Browser", Request.Browser.Browser);
+            dic.Add("Version", Request.Browser.Version);
+            dic.Add("Type", Request.Browser.Type);
+            dic.Add("IsMobileDevice", Request.Browser.IsMobileDevice.ToString());
+            dic.Add("MobileDeviceModel", Request.Browser.MobileDeviceModel);
+            dic.Add("Cookies", Request.Browser.Cookies.ToString());
+            return Json(dic, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetRequestInfo()
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("Platform", Request.Browser.Platform);
+            dic.Add("Id", Request.Browser.Id);
+            dic.Add("Browser", Request.Browser.Browser);
+            dic.Add("Version", Request.Browser.Version);
+            dic.Add("Type", Request.Browser.Type);
+            dic.Add("IsMobileDevice", Request.Browser.IsMobileDevice.ToString());
+            dic.Add("MobileDeviceModel", Request.Browser.MobileDeviceModel);
+            dic.Add("Cookies", Request.Browser.Cookies.ToString());
+            dic.Add("HttpMethod", Request.HttpMethod);
+            dic.Add("UserAgent", Request.UserAgent);
+            dic.Add("UserHostName", Request.UserHostName);
+            dic.Add("UserHostAddress", Request.UserHostAddress);
+            dic.Add("Path", Request.Path);
+            dic.Add("RawUrl", Request.RawUrl);
+            dic.Add("AbsoluteUri", Request.Url.AbsoluteUri);
+            dic.Add("AbsolutePath", Request.Url.AbsolutePath);
+            dic.Add("Host", Request.Url.Host);
+            dic.Add("Port", Request.Url.Port.ToString());
+            dic.Add("PathAndQuery", Request.Url.PathAndQuery);
+            dic.Add("LocalPath", Request.Url.LocalPath);
+            dic.Add("Query", Request.Url.Query);
+            return Json(dic, JsonRequestBehavior.AllowGet);
         }
     }
 

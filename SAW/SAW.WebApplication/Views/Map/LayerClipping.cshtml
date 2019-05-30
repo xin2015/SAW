@@ -32,6 +32,7 @@
     <script type="text/javascript">
         var center = [115.864585, 28.688948];
         var zoom = 10;
+        //var projection = ol.proj.get('EPSG:3857');
         var projection = ol.proj.get('EPSG:4326');
         var projectionExtent = projection.getExtent();
         var size = ol.extent.getWidth(projectionExtent) / 256;
@@ -64,6 +65,22 @@
             });
             layers[1] = new ol.layer.Tile({
                 source: new ol.source.WMTS({
+                    name: "天地图全国矢量电子地图底图",
+                    url: "http://t0.tianditu.gov.cn/vec_w/wmts?tk=fdcab2d88e293c189daf038cd01592e6",
+                    layer: "vec",
+                    style: "default",
+                    matrixSet: "w",
+                    format: "tiles",
+                    wrapX: true,
+                    tileGrid: new ol.tilegrid.WMTS({
+                        origin: ol.extent.getTopLeft(projectionExtent),
+                        resolutions: resolutions.slice(1, 19),
+                        matrixIds: matrixIds.slice(1, 19)
+                    })
+                })
+            });
+            layers[2] = new ol.layer.Tile({
+                source: new ol.source.WMTS({
                     name: "天地图全国矢量电子地图注记",
                     url: "http://t0.tianditu.gov.cn/cva_c/wmts?tk=fdcab2d88e293c189daf038cd01592e6",
                     layer: "cva",
@@ -78,7 +95,23 @@
                     })
                 })
             });
-            layers[2] = new ol.layer.Tile({
+            layers[3] = new ol.layer.Tile({
+                source: new ol.source.WMTS({
+                    name: "天地图全国矢量电子地图注记",
+                    url: "http://t0.tianditu.gov.cn/cva_w/wmts?tk=fdcab2d88e293c189daf038cd01592e6",
+                    layer: "cva",
+                    style: "default",
+                    matrixSet: "w",
+                    format: "tiles",
+                    wrapX: true,
+                    tileGrid: new ol.tilegrid.WMTS({
+                        origin: ol.extent.getTopLeft(projectionExtent),
+                        resolutions: resolutions.slice(1, 19),
+                        matrixIds: matrixIds.slice(1, 19)
+                    })
+                })
+            });
+            layers[4] = new ol.layer.Tile({
                 source: new ol.source.WMTS({
                     name: "天地图全国影像电子地图底图",
                     url: "http://t0.tianditu.gov.cn/img_c/wmts?tk=fdcab2d88e293c189daf038cd01592e6",
@@ -94,7 +127,23 @@
                     })
                 })
             });
-            layers[3] = new ol.layer.Tile({
+            layers[5] = new ol.layer.Tile({
+                source: new ol.source.WMTS({
+                    name: "天地图全国影像电子地图底图",
+                    url: "http://t0.tianditu.gov.cn/img_w/wmts?tk=fdcab2d88e293c189daf038cd01592e6",
+                    layer: "img",
+                    style: "default",
+                    matrixSet: "w",
+                    format: "tiles",
+                    wrapX: true,
+                    tileGrid: new ol.tilegrid.WMTS({
+                        origin: ol.extent.getTopLeft(projectionExtent),
+                        resolutions: resolutions.slice(1, 19),
+                        matrixIds: matrixIds.slice(1, 19)
+                    })
+                })
+            });
+            layers[6] = new ol.layer.Tile({
                 source: new ol.source.WMTS({
                     name: "天地图全国影像电子地图注记",
                     url: "http://t0.tianditu.gov.cn/cia_c/wmts?tk=fdcab2d88e293c189daf038cd01592e6",
@@ -110,7 +159,23 @@
                     })
                 })
             });
-            layers[4] = new ol.layer.Image({
+            layers[7] = new ol.layer.Tile({
+                source: new ol.source.WMTS({
+                    name: "天地图全国影像电子地图注记",
+                    url: "http://t0.tianditu.gov.cn/cia_w/wmts?tk=fdcab2d88e293c189daf038cd01592e6",
+                    layer: "cia",
+                    style: "default",
+                    matrixSet: "w",
+                    format: "tiles",
+                    wrapX: true,
+                    tileGrid: new ol.tilegrid.WMTS({
+                        origin: ol.extent.getTopLeft(projectionExtent),
+                        resolutions: resolutions.slice(1, 19),
+                        matrixIds: matrixIds.slice(1, 19)
+                    })
+                })
+            });
+            layers[8] = new ol.layer.Image({
                 source: new ol.source.ImageStatic({
                     url: 'https://graph.zq12369.cn/NO2/hour/CUACE_09km_NO2_station_2019-02-20%2023:00:00.png',
                     projection: projection,
@@ -124,7 +189,7 @@
             initLayers();
 
             var map = new ol.Map({
-                layers: [layers[0], layers[4]],
+                layers: [layers[0], layers[8]],
                 target: "mapDiv",
                 view: new ol.View({
                     center: center,//地图中心点
@@ -144,7 +209,7 @@
             //    }
 
             //    var index = 0;
-            //    layers[4].on('precompose', function (event) {
+            //    layers[8].on('precompose', function (event) {
             //        var ctx = event.context;
             //        ctx.save();
             //        ctx.beginPath();
@@ -165,7 +230,7 @@
             //        console.log(index++);
             //    });
 
-            //    layers[4].on('postcompose', function (event) {
+            //    layers[8].on('postcompose', function (event) {
             //        var ctx = event.context;
             //        ctx.restore();
             //    });
@@ -181,25 +246,25 @@
             }
 
             var index = 0;
-            layers[4].on('precompose', function (event) {
-                var ctx = event.context;
-                ctx.save();
-                ctx.beginPath();
-                var coordsT = jiangxiBoundariesString.split(';');
-                var coords = [];
-                for (var i = 0; i < coordsT.length; i++) {
-                    coords[i] = coordsT[i].split(',');
-                }
-                createClip(coords, ctx);
-                ctx.clip();
+            //layers[8].on('precompose', function (event) {
+            //    var ctx = event.context;
+            //    ctx.save();
+            //    ctx.beginPath();
+            //    var coordsT = jiangxiBoundariesString.split(';');
+            //    var coords = [];
+            //    for (var i = 0; i < coordsT.length; i++) {
+            //        coords[i] = coordsT[i].split(',');
+            //    }
+            //    createClip(coords, ctx);
+            //    ctx.clip();
 
-                console.log(index++);
-            });
+            //    console.log(index++);
+            //});
 
-            layers[4].on('postcompose', function (event) {
-                var ctx = event.context;
-                ctx.restore();
-            });
+            //layers[8].on('postcompose', function (event) {
+            //    var ctx = event.context;
+            //    ctx.restore();
+            //});
         }
     </script>
 </head>
