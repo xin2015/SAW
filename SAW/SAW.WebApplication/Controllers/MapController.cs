@@ -83,5 +83,12 @@ namespace SAW.WebApplication.Controllers
             return View();
         }
         #endregion
+
+        #region Leaflet
+        public ActionResult Leaflet()
+        {
+            return View();
+        }
+        #endregion
     }
 }

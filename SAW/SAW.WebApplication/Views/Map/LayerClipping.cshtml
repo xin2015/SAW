@@ -246,25 +246,25 @@
             }
 
             var index = 0;
-            //layers[8].on('precompose', function (event) {
-            //    var ctx = event.context;
-            //    ctx.save();
-            //    ctx.beginPath();
-            //    var coordsT = jiangxiBoundariesString.split(';');
-            //    var coords = [];
-            //    for (var i = 0; i < coordsT.length; i++) {
-            //        coords[i] = coordsT[i].split(',');
-            //    }
-            //    createClip(coords, ctx);
-            //    ctx.clip();
+            layers[8].on('precompose', function (event) {
+                var ctx = event.context;
+                ctx.save();
+                ctx.beginPath();
+                var coordsT = jiangxiBoundariesString.split(';');
+                var coords = [];
+                for (var i = 0; i < coordsT.length; i++) {
+                    coords[i] = coordsT[i].split(',');
+                }
+                createClip(coords, ctx);
+                ctx.clip();
 
-            //    console.log(index++);
-            //});
+                console.log(index++);
+            });
 
-            //layers[8].on('postcompose', function (event) {
-            //    var ctx = event.context;
-            //    ctx.restore();
-            //});
+            layers[8].on('postcompose', function (event) {
+                var ctx = event.context;
+                ctx.restore();
+            });
         }
     </script>
 </head>

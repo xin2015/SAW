@@ -215,6 +215,7 @@
     <None Include="Views\Map\BaiDuTileLayerTianDiTu.cshtml" />
     <Content Include="Views\Map\OpenLayersBMap.cshtml" />
     <Content Include="Views\Map\BMap.cshtml" />
+    <Content Include="Views\Map\Leaflet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

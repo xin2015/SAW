@@ -29,7 +29,7 @@ namespace SAW.WebApplication.Controllers
             string result = RSAHelper.Default.Decrypt(text.FromBase64String(), false).ToUTF8String();
             LoginInfo li = JsonConvert.DeserializeObject<LoginInfo>(result);
             li.Time = li.Time.ToLocalTime();
-            return Json(result, JsonRequestBehavior.DenyGet);
+            return Json(li, JsonRequestBehavior.DenyGet);
         }
 
         public ActionResult About()
