@@ -50,7 +50,11 @@
                     data: { text: text }
                 }).done(function (result) {
                     if (result) {
-                        alert(result);
+                        if (result.UserName == "admin") {
+                            location.href = '/Home/Index';
+                        } else {
+                            alert(result.UserName);
+                        }
                     }
                 });
             });
