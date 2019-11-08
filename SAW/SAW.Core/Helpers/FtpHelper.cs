@@ -62,12 +62,12 @@ namespace SAW.Core.Helpers
         }
 
 
-        public void Demo()
+        public static void Demo()
         {
             FtpHelper helper = new FtpHelper("ftp://202.104.69.206", "admin", "suncereltd@2017");
             try
             {
-                helper.DownloadFile("Data/ZZ/20180225.zip", "D:\\20180225.zip");
+                helper.DownloadFile("Data/Suncere/EnvCrownStationDB_zhuhai.rar", "D:\\Data\\预报预警小组\\DataBaseBackup\\EnvCrownStationDB_zhuhai.rar");
             }
             catch (Exception ex)
             {

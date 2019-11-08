@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "FloatThead";
+    Random rand = new Random();
+}
+
+<style type="text/css">
+    table.floatThead-table {
+        background-color: #FFF;
+    }
+</style>
+
+<div style="padding-top:15px;height:768px;overflow:auto;">
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>区域</th>
+                <th>站点</th>
+                <th>日期</th>
+                <th>Al（铝）</th>
+                <th>Si（硅）</th>
+                <th>K（钾）</th>
+                <th>Ca（钙）</th>
+                <th>V（钒）</th>
+                <th>Cr（铬）</th>
+                <th>Mn（锰）</th>
+                <th>Fe（铁）</th>
+                <th>Co（钴）</th>
+                <th>Ni（镍）</th>
+                <th>Cu（铜）</th>
+                <th>Zn（锌）</th>
+                <th>Ga（镓）</th>
+                <th>As（砷）</th>
+                <th>Se（硒）</th>
+                <th>Nb（铌）</th>
+                <th>Pd（钯）</th>
+                <th>Ag（银）</th>
+                <th>Cd（镉）</th>
+                <th>Sn（锡）</th>
+                <th>Sb（锑）</th>
+                <th>Cs（铯）</th>
+                <th>Ba（钡）</th>
+                <th>Au（金）</th>
+                <th>Hg（汞）</th>
+                <th>Tl（铊）</th>
+                <th>Pb（铅）</th>
+                <th>Bi（铋）</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < 20; i++)
+            {
+                <tr>
+                    <td>惠阳区</td>
+                    <td>环保局</td>
+                    <td>@DateTime.Today.AddDays(-i).ToString("yyyy-MM-dd")</td>
+                    @for (int j = 0; j < 28; j++)
+                    {
+                        <td>@rand.Next(1000)</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="https://cdn.bootcss.com/floatthead/2.0.3/jquery.floatThead.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $table = $('table');
+            $table.floatThead();
+            $table.floatThead('destroy');
+            $table.floatThead({
+                scrollContainer: true
+            });
+        });
+    </script>
+}

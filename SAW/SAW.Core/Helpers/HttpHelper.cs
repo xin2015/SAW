@@ -6,8 +6,8 @@
 /// 编 码 人：苏飞
 /// 联系方式：361983679  
 /// 官方网址：http://www.sufeinet.com/thread-3-1-1.html
-/// 修改日期：2017-09-30
-/// 版 本 号：1.9
+/// 修改日期：2019-08-08
+/// 版 本 号：2.0.9
 /// </summary>
 using System;
 using System.Collections.Generic;
@@ -212,12 +212,12 @@ namespace SufeiUtil
                 if (response.ContentEncoding != null && response.ContentEncoding.Equals("gzip", StringComparison.InvariantCultureIgnoreCase))
                 {
                     //开始读取流并设置编码方式
-                    new GZipStream(response.GetResponseStream(), CompressionMode.Decompress).CopyTo(_stream, 10240);
+                    new GZipStream(response.GetResponseStream(), CompressionMode.Decompress).CopyTo(_stream, 1024);
                 }
                 else
                 {
                     //开始读取流并设置编码方式
-                    response.GetResponseStream().CopyTo(_stream, 10240);
+                    response.GetResponseStream().CopyTo(_stream, 1024);
                 }
                 //获取Byte
                 ResponseByte = _stream.ToArray();
@@ -264,6 +264,10 @@ namespace SufeiUtil
                 request.Host = item.Host;
             }
             if (item.IfModifiedSince != null) request.IfModifiedSince = Convert.ToDateTime(item.IfModifiedSince);
+            if (item.Date != null)
+            {
+                request.Date = Convert.ToDateTime(item.Date);
+            }
             //Accept
             request.Accept = item.Accept;
             //ContentType返回类型
@@ -338,7 +342,14 @@ namespace SufeiUtil
             {
                 request.CookieContainer = new CookieContainer();
                 if (item.CookieCollection != null && item.CookieCollection.Count > 0)
+                {
+                    //默认为20个，如果超出需要增加长度
+                    if (item.CookieCollection.Count > 20)
+                    {
+                        request.CookieContainer.PerDomainCapacity = item.CookieCollection.Count;
+                    }
                     request.CookieContainer.Add(item.CookieCollection);
+                }
             }
         }
         /// <summary>
@@ -579,6 +590,15 @@ namespace SufeiUtil
             get { return isToLower; }
             set { isToLower = value; }
         }
+        private DateTime? _Date = null;
+        /// <summary>
+        ///   获取或设置要在 HTTP 请求中使用的 Date HTTP 标头值。默认不填写
+        /// </summary>
+        public DateTime? Date
+        {
+            get { return _Date; }
+            set { _Date = value; }
+        }
         private Boolean allowautoredirect = false;
         /// <summary>
         /// 支持跳转页面，查询结果将是跳转后的页面，默认是不跳转
@@ -628,7 +648,7 @@ namespace SufeiUtil
             set { header = value; }
         }
         /// <summary>
-        /// 获取或设置用于请求的 HTTP 版本。返回结果:用于请求的 HTTP 版本。默认为 System.Net.HttpVersion.Version11。
+        //     获取或设置用于请求的 HTTP 版本。返回结果:用于请求的 HTTP 版本。默认为 System.Net.HttpVersion.Version11。
         /// </summary>
         public Version ProtocolVersion { get; set; }
         private Boolean _expect100continue = false;

@@ -127,7 +127,14 @@ namespace SAW.ConsoleApp
             //}
             //sw.Stop();
             //Console.WriteLine("{0, -20}:{1}", "Sort", sw.Elapsed);
-
+            try
+            {
+                FtpHelper.Demo();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             Console.ReadLine();
         }
 
