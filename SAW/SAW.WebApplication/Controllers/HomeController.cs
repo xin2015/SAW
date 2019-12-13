@@ -140,6 +140,12 @@ namespace SAW.WebApplication.Controllers
             dic.Add("Query", Request.Url.Query);
             return Json(dic, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Temp()
+        {
+            return View();
+        }
+
     }
 
     class LoginInfo

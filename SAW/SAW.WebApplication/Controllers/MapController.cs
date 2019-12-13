@@ -58,6 +58,11 @@ namespace SAW.WebApplication.Controllers
         {
             return View();
         }
+
+        public ActionResult KrigingChina()
+        {
+            return View();
+        }
         #endregion
 
         #region BMap
