@@ -48,6 +48,16 @@ namespace SAW.WebApplication.Controllers
         {
             return View();
         }
+
+        public ActionResult Kriging()
+        {
+            return View();
+        }
+
+        public ActionResult KrigingGZ()
+        {
+            return View();
+        }
         #endregion
 
         #region BMap

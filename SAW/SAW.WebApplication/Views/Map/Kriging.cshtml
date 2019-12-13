@@ -1,0 +1,146 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="OpenLayers" />
+    <title>OpenLayersIndex</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css">
+    <style type="text/css">
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "Microsoft YaHei"
+        }
+
+        #mapDiv {
+            width: 100%;
+            height: 100%
+        }
+    </style>
+</head>
+<body>
+    <div id="mapDiv"></div>
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+    <script src="~/Scripts/kriging.js"></script>
+    <script type="text/javascript">
+        var params = {
+            mapCenter: [113.30765, 23.120049],
+            maxValue: 300,
+            krigingModel: 'exponential',//model还可选'gaussian','spherical'
+            krigingSigma2: 0,
+            krigingAlpha: 100,
+            canvasAlpha: 0.8,//canvas图层透明度
+            colors: ["#006837", "#1a9850", "#66bd63", "#a6d96a", "#d9ef8b", "#ffffbf", "#fee08b", "#fdae61", "#f46d43", "#d73027", "#a50026"]
+        };
+        var map = new ol.Map({
+            target: 'mapDiv',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                })
+            ],
+            view: new ol.View({
+                projection: ol.proj.get('EPSG:4326'),
+                center: params.mapCenter,
+                zoom: 16
+            })
+        });
+        var WFSVectorSource = new ol.source.Vector();
+        var WFSVectorLayer = new ol.layer.Vector({
+            source: WFSVectorSource
+        });
+        map.addLayer(WFSVectorLayer);
+        var select = new ol.interaction.Select();
+        map.addInteraction(select);
+        var dragBox = new ol.interaction.DragBox({
+            condition: ol.events.condition.platformModifierKeyOnly
+        });
+        map.addInteraction(dragBox);
+
+        for (var i = 0; i < 10; i++) {
+            var feature = new ol.Feature({
+                geometry: new ol.geom.Point([params.mapCenter[0] + Math.random() * 0.01 - .005, params.mapCenter[1] + Math.random() * 0.01 - .005]),
+                value: Math.round(Math.random() * params.maxValue)
+            });
+            feature.setStyle(new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 6,
+                    fill: new ol.style.Fill({ color: "#00F" })
+                })
+            }));
+            WFSVectorSource.addFeature(feature);
+        }
+
+        var selectedFeatures = select.getFeatures();
+        dragBox.on('boxend', () => {
+            var extent = dragBox.getGeometry().getExtent();
+            WFSVectorSource.forEachFeatureIntersectingExtent(extent, (feature) => {
+                selectedFeatures.push(feature);
+            });
+            drawKriging(extent);
+        });
+        dragBox.on('boxstart', () => {
+            selectedFeatures.clear();
+        });
+
+        var canvasLayer = null;
+        function drawKriging(extent) {
+            var values = [], longs = [], lats = [];
+            selectedFeatures.forEach(feature => {
+                values.push(feature.N.value);
+                longs.push(feature.N.geometry.A[0]);
+                lats.push(feature.N.geometry.A[1]);
+            });
+            if (values.length > 3) {
+                var variogram = kriging.train(values, longs, lats, params.krigingModel, params.krigingSigma2, params.krigingAlpha);
+                var polygons = [];
+                polygons.push([[extent[0], extent[1]], [extent[0], extent[3]], [extent[2], extent[3]], [extent[2], extent[1]]]);
+                var grid = kriging.grid(polygons, variogram, (extent[2] - extent[0]) / 200);
+
+                var dragBoxExtent = extent;
+
+                if (canvasLayer != null) {
+                    map.removeLayer(canvasLayer);
+                }
+
+                canvasLayer = new ol.layer.Image({
+                    source: new ol.source.ImageCanvas({
+                        canvasFunction: (extent, resolution, pixelRatio, size, projection) => {
+                            var canvas = document.createElement('canvas');
+                            canvas.width = size[0];
+                            canvas.height = size[1];
+                            canvas.style.display = 'block';
+                            //设置canvas透明度
+                            canvas.getContext('2d').globalAlpha = params.canvasAlpha;
+
+                            //使用分层设色渲染
+                            kriging.plot(canvas, grid,
+                                [extent[0], extent[2]], [extent[1], extent[3]], params.colors);
+
+                            return canvas;
+                        },
+                        projection: ol.proj.get('EPSG:4326')
+                    })
+                });
+
+                map.addLayer(canvasLayer);
+            } else {
+                alert("有效样点个数不足，无法插值");
+            }
+        }
+
+        var extent = [params.mapCenter[0] - .005, params.mapCenter[1] - .005, params.mapCenter[0] + .005, params.mapCenter[1] + .005];
+        WFSVectorSource.forEachFeatureIntersectingExtent(extent, (feature) => {
+            selectedFeatures.push(feature);
+        });
+
+        drawKriging(extent);
+    </script>
+</body>
+</html>

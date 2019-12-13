@@ -25,6 +25,7 @@
         }
     </style>
     <script type="text/javascript">
+        var mktProjection = ol.proj.get('EPSG:3857');
         var projection = ol.proj.get('EPSG:4326');
         var projectionExtent = projection.getExtent();
         var size = ol.extent.getWidth(projectionExtent) / 256;
