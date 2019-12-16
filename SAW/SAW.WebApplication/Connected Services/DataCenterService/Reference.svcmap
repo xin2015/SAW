@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="3efc9624-42f2-4207-8427-b9a3c62d491a" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://cityphoto.suncereltd.cn:18405/DataCenterWCF/DataCenterService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="DataCenterService.xsd" MetadataType="Schema" ID="065b26c9-82c3-484b-8665-ac6dba8b484a" SourceId="1" SourceUrl="http://cityphoto.suncereltd.cn:18405/DataCenterWCF/DataCenterService.svc?xsd=xsd0" />
+    <MetadataFile FileName="DataCenterService1.xsd" MetadataType="Schema" ID="fb35fcc9-d541-44f9-9540-1f3318e0b9b4" SourceId="1" SourceUrl="http://cityphoto.suncereltd.cn:18405/DataCenterWCF/DataCenterService.svc?xsd=xsd2" />
+    <MetadataFile FileName="DataCenterService.wsdl" MetadataType="Wsdl" ID="2ff2a30b-0b6b-4417-9677-f28c0efd9a69" SourceId="1" SourceUrl="http://cityphoto.suncereltd.cn:18405/DataCenterWCF/DataCenterService.svc?wsdl" />
+    <MetadataFile FileName="DataCenterService2.xsd" MetadataType="Schema" ID="e31db5a5-7978-47c6-b48b-77950e7f7aa1" SourceId="1" SourceUrl="http://cityphoto.suncereltd.cn:18405/DataCenterWCF/DataCenterService.svc?xsd=xsd1" />
+    <MetadataFile FileName="DataCenterService.disco" MetadataType="Disco" ID="5d2d8fd9-37b8-4917-a26b-c14ef97df87b" SourceId="1" SourceUrl="http://cityphoto.suncereltd.cn:18405/DataCenterWCF/DataCenterService.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

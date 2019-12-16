@@ -118,7 +118,7 @@
                     }
                 }
             }
-            var grid = kriging.grid(polygons, variogram, (lngMax - lngMin) / 1000);
+            var grid = kriging.grid(polygons, variogram, (lngMax - lngMin) / 2000);
             var canvasLayer = new ol.layer.Image({
                 source: new ol.source.ImageCanvas({
                     canvasFunction: function (extent, resolution, pixelRatio, size, projection) {

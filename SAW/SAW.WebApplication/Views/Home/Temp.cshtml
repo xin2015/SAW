@@ -27,12 +27,12 @@
 <body>
     <div id="mapDiv"></div>
     <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
-    <script src="~/Scripts/kriging.js"></script>
+    <script src="~/Scripts/kriging.xin.js"></script>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript">
         var params = {
-            mapCenter: [113.30765, 23.120049],
-            maxValue: 300,
+            mapCenter: [107.123407, 36.028857],
+            maxValue: 200,
             krigingModel: 'exponential',//model还可选'gaussian','spherical'
             krigingSigma2: 0,
             krigingAlpha: 100,
@@ -49,76 +49,98 @@
             view: new ol.View({
                 projection: ol.proj.get('EPSG:4326'),
                 center: params.mapCenter,
-                zoom: 10
+                zoom: 5
             })
         });
 
-
-        $.getJSON("/Scripts/440100.json", function (result) {
-            var gz = result;
-            var data = [];
-            data.push([113.235, 23.1422, 124]);
-            data.push([113.261, 23.1050, 160]);
-            data.push([113.348, 23.0916, 129]);
-            data.push([113.433, 23.1050, 149]);
-            data.push([113.352, 22.9477, 127]);
-            data.push([113.215, 23.3917, 100]);
-            data.push([113.260, 23.1331, 108]);
-            data.push([113.568, 23.2783, 146]);
-            data.push([113.281, 23.1569, 99]);
-            data.push([113.589, 23.5538, 87]);
-            data.push([113.321, 23.1323, 112]);
-            var lngs = [], lats = [], values = [];
-            for (var i = 0; i < data.length; i++) {
-                lngs.push(data[i][0]);
-                lats.push(data[i][1]);
-                values.push(data[i][2]);
-            }
-            var variogram = kriging.train(values, lngs, lats, params.krigingModel, params.krigingSigma2, params.krigingAlpha);
-            var polygons = [];
-            var lngMin = 180, lngMax = 0, latMin = 90, latMax = 0;
-            for (var h = 0; h < gz.features.length; h++) {
-                var coordinates = gz.features[h].geometry.coordinates;
-                for (var i = 0; i < coordinates.length; i++) {
-                    var polygonsT = coordinates[i];
-                    for (var j = 0; j < polygonsT.length; j++) {
-                        var points = polygonsT[j];
-                        polygons.push(points);
-                        for (var k = 0; k < points.length; k++) {
-                            var item = points[k];
-                            if (item[0] < lngMin) {
-                                lngMin = item[0];
+        $.get("/Home/GetAQIData", function (stationHourData) {
+            $.getJSON("/Scripts/china.json", function (china) {
+                var lnga = 135, lngi = 74, lata = 54, lati = 18;
+                var data = [];
+                //for (var i = 0; i < 200; i++) {
+                //    data.push([Math.random() * (lnga - lngi) + lngi, Math.random() * (lata - lati) + lati, Math.round(Math.random() * params.maxValue)]);
+                //}
+                for (var i = 0; i < stationHourData.length; i++) {
+                    var item = stationHourData[i];
+                    data.push([item.Longitude - 0, item.Latitude - 0, item.AQI - 0]);
+                }
+                var lngs = [], lats = [], values = [];
+                for (var i = 0; i < data.length; i = i + 5) {
+                    lngs.push(data[i][0]);
+                    lats.push(data[i][1]);
+                    values.push(data[i][2]);
+                }
+                var variogram = kriging.train(values, lngs, lats, params.krigingModel, params.krigingSigma2, params.krigingAlpha);
+                var polygons = [];
+                var lngMin = 180, lngMax = 0, latMin = 90, latMax = 0;
+                for (var h = 0; h < china.features.length; h++) {
+                    if (china.features[h].geometry.type == "MultiPolygon") {
+                        var coordinates = china.features[h].geometry.coordinates;
+                        for (var i = 0; i < coordinates.length; i++) {
+                            var polygonsT = coordinates[i];
+                            for (var j = 0; j < polygonsT.length; j++) {
+                                var points = polygonsT[j];
+                                polygons.push(points);
+                                for (var k = 0; k < points.length; k++) {
+                                    var item = points[k];
+                                    if (item[0] < lngMin) {
+                                        lngMin = item[0];
+                                    }
+                                    if (item[0] > lngMax) {
+                                        lngMax = item[0]
+                                    }
+                                    if (item[1] < latMin) {
+                                        latMin = item[1];
+                                    }
+                                    if (item[1] > latMax) {
+                                        latMax = item[1];
+                                    }
+                                }
                             }
-                            if (item[0] > lngMax) {
-                                lngMax = item[0]
-                            }
-                            if (item[1] < latMin) {
-                                latMin = item[1];
-                            }
-                            if (item[1] > latMax) {
-                                latMax = item[1];
+                        }
+                    } else {
+                        var polygonsT = china.features[h].geometry.coordinates;
+                        for (var j = 0; j < polygonsT.length; j++) {
+                            var points = polygonsT[j];
+                            polygons.push(points);
+                            for (var k = 0; k < points.length; k++) {
+                                var item = points[k];
+                                if (item[0] < lngMin) {
+                                    lngMin = item[0];
+                                }
+                                if (item[0] > lngMax) {
+                                    lngMax = item[0]
+                                }
+                                if (item[1] < latMin) {
+                                    latMin = item[1];
+                                }
+                                if (item[1] > latMax) {
+                                    latMax = item[1];
+                                }
                             }
                         }
                     }
                 }
-            }
-            var grid = kriging.grid(polygons, variogram, (lngMax - lngMin) / 1000);
-            var canvasLayer = new ol.layer.Image({
-                source: new ol.source.ImageCanvas({
-                    canvasFunction: function (extent, resolution, pixelRatio, size, projection) {
-                        var canvas = document.createElement('canvas');
-                        canvas.width = size[0];
-                        canvas.height = size[1];
-                        canvas.style.display = 'block';
-                        canvas.getContext('2d').globalAlpha = params.canvasAlpha;
-                        kriging.plot(canvas, grid, [extent[0], extent[2]], [extent[1], extent[3]], params.colors);
-                        return canvas;
-                    },
-                    projection: ol.proj.get('EPSG:4326')
-                })
+                var grid = kriging.grid(polygons, variogram, (lngMax - lngMin) / 1000);
+                var canvasLayer = new ol.layer.Image({
+                    source: new ol.source.ImageCanvas({
+                        canvasFunction: function (extent, resolution, pixelRatio, size, projection) {
+                            var canvas = document.createElement('canvas');
+                            canvas.width = size[0];
+                            canvas.height = size[1];
+                            canvas.style.display = 'block';
+                            canvas.getContext('2d').globalAlpha = params.canvasAlpha;
+                            kriging.plot(canvas, grid, [extent[0], extent[2]], [extent[1], extent[3]], params.colors);
+                            return canvas;
+                        },
+                        projection: ol.proj.get('EPSG:4326')
+                    })
+                });
+                map.addLayer(canvasLayer);
             });
-            map.addLayer(canvasLayer);
         });
+
+
     </script>
 </body>
 </html>

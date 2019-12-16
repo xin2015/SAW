@@ -53,6 +53,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -142,6 +144,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Connected Services\DataCenterService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Global.asax.cs">
@@ -150,6 +157,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\DataCenterService\DataCenterService.disco" />
+    <None Include="Connected Services\DataCenterService\configuration91.svcinfo" />
+    <None Include="Connected Services\DataCenterService\configuration.svcinfo" />
+    <None Include="Connected Services\DataCenterService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -160,6 +174,25 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Connected Services\DataCenterService\DataCenterService.wsdl" />
+    <None Include="Connected Services\DataCenterService\DataCenterService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DataCenterService\DataCenterService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\DataCenterService\DataCenterService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\DataCenterService\SAW.WebApplication.DataCenterService.CityDayData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\DataCenterService\SAW.WebApplication.DataCenterService.CityHourData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\DataCenterService\SAW.WebApplication.DataCenterService.StationHourData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\440100.json" />
@@ -259,6 +292,12 @@
       <Project>{502D94F7-4CB0-4720-A087-261751523F5B}</Project>
       <Name>SAW.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\DataCenterService\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

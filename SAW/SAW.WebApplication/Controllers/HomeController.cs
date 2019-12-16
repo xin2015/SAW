@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SAW.Core.Extensions;
 using SAW.Core.Helpers;
+using SAW.WebApplication.DataCenterService;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -146,6 +147,15 @@ namespace SAW.WebApplication.Controllers
             return View();
         }
 
+        public ActionResult GetAQIData()
+        {
+            using (DataCenterServiceClient client = new DataCenterServiceClient())
+            {
+                StationHourData[] data = client.GetStationHourDataListFromHistoryByTime("GDAEIB", "2019!@GD", DateTime.Today.AddDays(-1));
+                data = data.Where(o => o.AQI != "—").ToArray();
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 
     class LoginInfo

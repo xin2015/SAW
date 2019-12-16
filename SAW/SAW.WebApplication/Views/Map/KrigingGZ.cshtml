@@ -31,12 +31,12 @@
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript">
         var params = {
-            mapCenter: [113.30765, 23.120049],
-            maxValue: 300,
+            mapCenter: [113.514176,23.286012],
+            maxValue: 200,
             krigingModel: 'exponential',//model还可选'gaussian','spherical'
             krigingSigma2: 0,
             krigingAlpha: 100,
-            canvasAlpha: 0.8,//canvas图层透明度
+            canvasAlpha: 0.5,//canvas图层透明度
             colors: ["#00E400", "#FFFF00", "#FF7E00", "#FF0000", "#99004C", "#7E0023"] //["#00E400", "#FFFF00", "#FF7E00", "#FF0000", "#99004C", "#7E0023"]
         };
         var map = new ol.Map({
@@ -49,25 +49,30 @@
             view: new ol.View({
                 projection: ol.proj.get('EPSG:4326'),
                 center: params.mapCenter,
-                zoom: 10
+                zoom: 9
             })
         });
 
 
         $.getJSON("/Scripts/440100.json", function (result) {
             var gz = result;
+            //var data = [];
+            //data.push([113.235, 23.1422, Math.round(Math.random() * params.maxValue)]);
+            //data.push([113.261, 23.1050, Math.round(Math.random() * params.maxValue)]);
+            //data.push([113.348, 23.0916, Math.round(Math.random() * params.maxValue)]);
+            //data.push([113.433, 23.1050, Math.round(Math.random() * params.maxValue)]);
+            //data.push([113.352, 22.9477, Math.round(Math.random() * params.maxValue)]);
+            //data.push([113.215, 23.3917, Math.round(Math.random() * params.maxValue)]);
+            //data.push([113.260, 23.1331, Math.round(Math.random() * params.maxValue)]);
+            //data.push([113.568, 23.2783, Math.round(Math.random() * params.maxValue)]);
+            //data.push([113.281, 23.1569, Math.round(Math.random() * params.maxValue)]);
+            //data.push([113.589, 23.5538, Math.round(Math.random() * params.maxValue)]);
+            //data.push([113.321, 23.1323, Math.round(Math.random() * params.maxValue)]);
+            var lnga = 114, lngi = 113, lata = 24, lati = 22;
             var data = [];
-            data.push([113.235, 23.1422, 124]);
-            data.push([113.261, 23.1050, 160]);
-            data.push([113.348, 23.0916, 129]);
-            data.push([113.433, 23.1050, 149]);
-            data.push([113.352, 22.9477, 127]);
-            data.push([113.215, 23.3917, 100]);
-            data.push([113.260, 23.1331, 108]);
-            data.push([113.568, 23.2783, 146]);
-            data.push([113.281, 23.1569, 99]);
-            data.push([113.589, 23.5538, 87]);
-            data.push([113.321, 23.1323, 112]);
+            for (var i = 0; i < 50; i++) {
+                data.push([Math.random() * (lnga - lngi) + lngi, Math.random() * (lata - lati) + lati, Math.round(Math.random() * params.maxValue)]);
+            }
             var lngs = [], lats = [], values = [];
             for (var i = 0; i < data.length; i++) {
                 lngs.push(data[i][0]);
