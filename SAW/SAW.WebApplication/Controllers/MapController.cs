@@ -85,6 +85,11 @@ namespace SAW.WebApplication.Controllers
         {
             return View();
         }
+
+        public ActionResult BMapTranslate()
+        {
+            return View();
+        }
         #endregion
 
         #region BingMaps

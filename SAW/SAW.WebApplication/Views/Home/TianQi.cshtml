@@ -1,0 +1,10 @@
+﻿
+@{
+    ViewBag.Title = "TianQi";
+}
+
+@for(int i = 1; i < 165; i++)
+{
+    string url = string.Format("http://i.tianqi.com/index.php?c=code&id={0}", i);
+    <iframe src="@url"></iframe>
+}

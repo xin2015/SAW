@@ -156,6 +156,11 @@ namespace SAW.WebApplication.Controllers
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult TianQi()
+        {
+            return View();
+        }
     }
 
     class LoginInfo

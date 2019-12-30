@@ -8,6 +8,7 @@ using Org.BouncyCastle.X509;
 using SAW.Core.CryptoTransverters;
 using SAW.Core.Extensions;
 using SAW.Core.Helpers;
+using SAW.Core.InterpolationAlgorithm;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -127,13 +128,43 @@ namespace SAW.ConsoleApp
             //}
             //sw.Stop();
             //Console.WriteLine("{0, -20}:{1}", "Sort", sw.Elapsed);
-            try
+
+            //int sampleCount = 5;
+            //double[] t = new double[sampleCount];
+            //double[] x = new double[sampleCount];
+            //double[] y = new double[sampleCount];
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    t[i] = 2 * i + 1;
+            //    x[i] = i + 1;
+            //    y[i] = i + 1;
+            //}
+            //Variogram variogram = Kriging.Train(t, x, y, KrigingModel.Exponential, 0, 100);
+            //Console.WriteLine(Kriging.Predict(1, 1, variogram));
+            //Console.WriteLine(Kriging.Predict(1, 2, variogram));
+            //Console.WriteLine(Kriging.Predict(1.5, 1, variogram));
+            //Console.WriteLine(Kriging.Predict(1.5, 1.5, variogram));
+            //Console.WriteLine(Kriging.Predict(1.5, 2, variogram));
+            //Console.WriteLine(Kriging.Predict(2, 2, variogram));
+            //Console.ReadLine();
+
+
+
+            Random rand = new Random();
+            int sampleCount = 100;
+            double[][] sources = new double[sampleCount][];
+            double[][] targets = new double[sampleCount][];
+            string[] strings = new string[sampleCount];
+            for (int i = 0; i < sampleCount; i++)
             {
-                FtpHelper.Demo();
+                sources[i] = new double[] { rand.NextDouble() * 180, rand.NextDouble() * 90 };
+                strings[i] = string.Join(",", sources[i]);
             }
-            catch (Exception ex)
+            string coords = string.Join(";", strings);
+            string url = string.Format("http://api.map.baidu.com/geoconv/v1/?coords={0}&from=1&to=5&ak=jGMQOfDd4HEYBlqhfsZq4Hj6", coords);
+            using (WebClient wc = new WebClient())
             {
-                Console.WriteLine(ex.Message);
+                string text = wc.DownloadString(url);
             }
             Console.ReadLine();
         }

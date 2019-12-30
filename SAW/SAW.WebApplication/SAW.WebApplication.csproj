@@ -261,6 +261,7 @@
     <Content Include="Views\Map\LayerClipping.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Home\Temp.cshtml" />
+    <Content Include="Views\Home\TianQi.cshtml" />
     <None Include="Views\Map\BaiDuTileLayer.cshtml" />
     <None Include="Views\Map\BaiDuTileLayerTianDiTu.cshtml" />
     <Content Include="Views\Map\OpenLayersBMap.cshtml" />
@@ -269,6 +270,7 @@
     <Content Include="Views\Map\Kriging.cshtml" />
     <Content Include="Views\Map\KrigingGZ.cshtml" />
     <Content Include="Views\Map\KrigingChina.cshtml" />
+    <Content Include="Views\Map\BMapTranslate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

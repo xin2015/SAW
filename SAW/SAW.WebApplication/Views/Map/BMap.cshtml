@@ -30,8 +30,28 @@
     <script type="text/javascript">
         // 百度地图API功能
         var map = new BMap.Map('allmap');
-        map.centerAndZoom(new BMap.Point(116.404, 39.915), 18);
+        map.centerAndZoom(new BMap.Point(116.327159, 39.990912), 20);
         map.enableScrollWheelZoom(true);
+        //GPS坐标
+        var x = 116.327159;
+        var y = 39.990912;
+        var x1, y1;
+        for (var i = 6; i < 7; i++) {
+            var m = Math.pow(10, i);
+            AddMarker(Math.round(x * m) / m, Math.round(y * m) / m);
+            AddMarker((Math.round(x * m) + 1) / m, (Math.round(y * m) + 1) / m);
+        }
+
+        function AddMarker(x, y) {
+            var point = new BMap.Point(x, y);
+            var marker = new BMap.Marker(point);
+            map.addOverlay(marker);
+        }
+
+        function cRound(value, i) {
+            var m = Math.pow(10, i);
+            return Math.round(value * m) / m;
+        }
     </script>
 </body>
 </html>
