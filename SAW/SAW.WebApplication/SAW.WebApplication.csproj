@@ -271,6 +271,7 @@
     <Content Include="Views\Map\KrigingGZ.cshtml" />
     <Content Include="Views\Map\KrigingChina.cshtml" />
     <Content Include="Views\Map\BMapTranslate.cshtml" />
+    <Content Include="Views\Map\TianDiTuIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

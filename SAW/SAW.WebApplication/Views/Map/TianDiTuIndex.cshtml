@@ -1,0 +1,100 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="天地图" />
+    <title>天地图</title>
+    <script src=" http://api.tianditu.gov.cn/api?v=4.0&tk=fdcab2d88e293c189daf038cd01592e6" type="text/javascript"></script>
+    <script type="text/javascript" src="http://lbs.tianditu.gov.cn/api/js4.0/opensource/openlibrary/ImageOverlay.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <style type="text/css">
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "Microsoft YaHei"
+        }
+
+        #mapDiv {
+            width: 100%;
+            height: 100%
+        }
+    </style>
+    <script type="text/javascript">
+        var map;
+        var zoom = 5;
+        var img;
+        var activeSector = { center: [116.817461, 39.844624], scale: 800, size: [1200, 900], sectorName: '中国' };
+        var params = {
+            data: {
+                datas: [],
+                paramName: "AQI"
+            },
+            center: activeSector.center,
+            scale: activeSector.scale,
+            size: activeSector.size,
+            sectorName: activeSector.sectorName
+        };
+        params.data.datas.push({
+            lat: 39.916980,
+            lng: 116.390750,
+            value: 10
+        });
+        params.data.datas.push({
+            lat: 29.916980,
+            lng: 116.390750,
+            value: 40
+        });
+        params.data.datas.push({
+            lat: 39.916980,
+            lng: 106.390750,
+            value: 70
+        });
+        params.data.datas.push({
+            lat: 49.916980,
+            lng: 116.390750,
+            value: 100
+        });
+        params.data.datas.push({
+            lat: 39.916980,
+            lng: 126.390750,
+            value: 130
+        });
+        function onLoad() {
+            map = new T.Map('mapDiv');
+            map.centerAndZoom(new T.LngLat(116.390750, 39.916980), zoom);
+            var bd = new T.LngLatBounds(
+                new T.LngLat(73.84562636518827, 11.207859129719365),
+                new T.LngLat(159.78929563481174, 60.14052607894454)
+            );
+            $.post("http://117.121.97.122:9035/render/postspa", params, function (res) {
+                activeSector.bounds = bd;
+                img = new T.ImageOverlay("http://117.121.97.122:9035/render/getimg?hash=" + res.hash, bd, { opacity: 1, alt: "空气质量" });
+                map.addOverLay(img);
+            });
+
+            //创建图片对象
+            var icon = new T.Icon({
+                iconUrl: "http://cityphoto.suncereltd.cn:8095/Content/images/publishPlatform/aqi-s1.png",
+                iconSize: new T.Point(16, 16),
+                iconAnchor: new T.Point(8, 8)
+            });
+            //向地图上添加自定义标注
+            var marker = new T.Marker(new T.LngLat(116.390750, 39.916980), { icon: icon });
+            map.addOverLay(marker);
+            map.addOverLay(new T.Marker(new T.LngLat(116.390750, 29.916980), { icon: icon }));
+            map.addOverLay(new T.Marker(new T.LngLat(106.390750, 39.916980), { icon: icon }));
+            map.addOverLay(new T.Marker(new T.LngLat(116.390750, 49.916980), { icon: icon }));
+            map.addOverLay(new T.Marker(new T.LngLat(126.390750, 39.916980), { icon: icon }));
+        }
+    </script>
+</head>
+<body onLoad="onLoad()">
+    <div id="mapDiv"></div>
+</body>
+</html>

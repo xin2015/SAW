@@ -18,6 +18,11 @@ namespace SAW.WebApplication.Controllers
             return View();
         }
 
+        public ActionResult TianDiTuIndex()
+        {
+            return View();
+        }
+
         #region OpenLayers
         public ActionResult OpenLayers()
         {
