@@ -31,7 +31,7 @@
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript">
         var params = {
-            mapCenter: [107.123407,36.028857],
+            mapCenter: [107.123407, 36.028857],
             maxValue: 200,
             krigingModel: 'exponential',//model还可选'gaussian','spherical'
             krigingSigma2: 0,
@@ -118,7 +118,7 @@
                     }
                 }
             }
-            var grid = kriging.grid(polygons, variogram, (lngMax - lngMin) / 2000);
+            var grid = kriging.grid(polygons, variogram, (lngMax - lngMin) / 1000);
             var canvasLayer = new ol.layer.Image({
                 source: new ol.source.ImageCanvas({
                     canvasFunction: function (extent, resolution, pixelRatio, size, projection) {
@@ -127,7 +127,9 @@
                         canvas.height = size[1];
                         canvas.style.display = 'block';
                         canvas.getContext('2d').globalAlpha = params.canvasAlpha;
-                        kriging.plot(canvas, grid, [extent[0], extent[2]], [extent[1], extent[3]], params.colors);
+                        //kriging.plot(canvas, grid, [extent[0], extent[2]], [extent[1], extent[3]], params.colors);
+                        //kriging.plotAQI(canvas, grid, [extent[0], extent[2]], [extent[1], extent[3]]);
+                        kriging.plotAQIWithGradient(canvas, grid, [extent[0], extent[2]], [extent[1], extent[3]]);
                         return canvas;
                     },
                     projection: ol.proj.get('EPSG:4326')
