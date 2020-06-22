@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using SAW.Core.Extensions;
 using SAW.Core.Helpers;
+using SAW.Core.InterpolationAlgorithm;
 using SAW.WebApplication.DataCenterService;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -15,6 +17,60 @@ namespace SAW.WebApplication.Controllers
     {
         public ActionResult Index()
         {
+            using (DataCenterServiceClient client = new DataCenterServiceClient())
+            {
+                StationHourData[] data = client.GetStationHourDataListFromHistoryByTime("GDAEIB", "2019!@GD", DateTime.Today.AddDays(-1));
+                data = data.Where(o => o.AQI != "—").ToArray();
+                List<double> t = new List<double>(), x = new List<double>(), y = new List<double>();
+                int i = 0;
+                double max = 0, lonm = 0, latm = 0, w = 0.5, h = 0.5;
+                for (double lon = 73.2; lon <= 135.4; lon += w)
+                {
+                    for (double lat = 17.8; lat <= 53.8; lat += w)
+                    {
+                        max = 0;
+                        for (i = 0; i < data.Length; i++)
+                        {
+                            StationHourData item = data[i];
+                            double xi = double.Parse(item.Longitude), yi = double.Parse(item.Latitude);
+                            if (xi >= lon && xi <= lon + w && yi >= lat && yi <= lat + w)
+                            {
+                                double ti = double.Parse(item.AQI);
+                                if (ti > max)
+                                {
+                                    max = ti;
+                                    lonm = xi;
+                                    latm = yi;
+                                }
+                            }
+                        }
+                        if (max > 0)
+                        {
+                            t.Add(max);
+                            x.Add(lonm);
+                            y.Add(latm);
+                        }
+                    }
+                }
+                VariogramSrc variogram = KrigingSrc.Train(t.ToArray(), x.ToArray(), y.ToArray(), KrigingModelSrc.Exponential, 0, 100);
+                List<double> list = new List<double>();
+                Bitmap bitmap = new Bitmap(1001, 1001);
+                i = 0;
+                w = (135.4 - 73.2) / 1000;
+                h = (53.8 - 17.8) / 1000;
+                for (double lon = 73.2; lon <= 135.4; lon += w)
+                {
+                    int j = 0;
+                    for (double lat = 17.8; lat <= 53.8; lat += h)
+                    {
+                        int aqi = (int)Math.Round(KrigingSrc.Predict(lon, lat, variogram));
+                        bitmap.SetPixel(i, j++, Color.FromArgb(aqi / 256, aqi % 256, 0));
+                    }
+                    i++;
+                }
+                bitmap.Save("D:\\" + DateTime.Today.AddDays(-1).ToString("yyyyMMdd") + ".png");
+                bitmap.Dispose();
+            }
             return View();
         }
 
@@ -158,6 +214,11 @@ namespace SAW.WebApplication.Controllers
         }
 
         public ActionResult TianQi()
+        {
+            return View();
+        }
+
+        public ActionResult TestPNG()
         {
             return View();
         }

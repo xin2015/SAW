@@ -67,6 +67,7 @@
     <Compile Include="Helpers\XmlSerializerHelper.cs" />
     <Compile Include="Helpers\ZipHelper.cs" />
     <Compile Include="InterpolationAlgorithm\Kriging.cs" />
+    <Compile Include="InterpolationAlgorithm\KrigingSrc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -150,23 +150,24 @@ namespace SAW.ConsoleApp
 
 
 
-            Random rand = new Random();
-            int sampleCount = 100;
-            double[][] sources = new double[sampleCount][];
-            double[][] targets = new double[sampleCount][];
-            string[] strings = new string[sampleCount];
-            for (int i = 0; i < sampleCount; i++)
-            {
-                sources[i] = new double[] { rand.NextDouble() * 180, rand.NextDouble() * 90 };
-                strings[i] = string.Join(",", sources[i]);
-            }
-            string coords = string.Join(";", strings);
-            string url = string.Format("http://api.map.baidu.com/geoconv/v1/?coords={0}&from=1&to=5&ak=jGMQOfDd4HEYBlqhfsZq4Hj6", coords);
-            using (WebClient wc = new WebClient())
-            {
-                string text = wc.DownloadString(url);
-            }
-            Console.ReadLine();
+            //Random rand = new Random();
+            //int sampleCount = 100;
+            //double[][] sources = new double[sampleCount][];
+            //double[][] targets = new double[sampleCount][];
+            //string[] strings = new string[sampleCount];
+            //for (int i = 0; i < sampleCount; i++)
+            //{
+            //    sources[i] = new double[] { rand.NextDouble() * 180, rand.NextDouble() * 90 };
+            //    strings[i] = string.Join(",", sources[i]);
+            //}
+            //string coords = string.Join(";", strings);
+            //string url = string.Format("http://api.map.baidu.com/geoconv/v1/?coords={0}&from=1&to=5&ak=jGMQOfDd4HEYBlqhfsZq4Hj6", coords);
+            //using (WebClient wc = new WebClient())
+            //{
+            //    string text = wc.DownloadString(url);
+            //}
+            //Console.ReadLine();
+
         }
 
         static SRSystem GetSRSystem()
