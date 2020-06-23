@@ -54,10 +54,11 @@ namespace SAW.WebApplication.Controllers
                 }
                 VariogramSrc variogram = KrigingSrc.Train(t.ToArray(), x.ToArray(), y.ToArray(), KrigingModelSrc.Exponential, 0, 100);
                 List<double> list = new List<double>();
-                Bitmap bitmap = new Bitmap(961, 541);
+                int width = 1001, height = 741;
+                Bitmap bitmap = new Bitmap(width, height);
                 i = 0;
-                w = (135.4 - 73.2) / 960;
-                h = (53.8 - 17.8) / 540;
+                w = (135.4 - 73.2) / (width - 1);
+                h = (53.8 - 17.8) / (height - 1);
                 for (double lon = 73.2; lon <= 135.4; lon += w)
                 {
                     int j = 0;
@@ -224,6 +225,11 @@ namespace SAW.WebApplication.Controllers
         }
 
         public ActionResult TestPolygons()
+        {
+            return View();
+        }
+
+        public ActionResult GIS()
         {
             return View();
         }

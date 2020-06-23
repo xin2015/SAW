@@ -7,7 +7,9 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="OpenLayers" />
-    <title>TestPNG</title>
+    <title>WMSImage</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
     <style type="text/css">
         body, html {
             width: 100%;
@@ -16,22 +18,23 @@
             font-family: "Microsoft YaHei"
         }
 
-        .mapDiv {
+        .map {
             width: 100%;
             height: 100%;
         }
     </style>
 </head>
 <body>
-    <div class="mapDiv" id="mapDiv"></div>
-    <script type="text/javascript" src="//api.map.baidu.com/api?v=3.0&ak=E4805d16520de693a3fe707cdc962045"></script>
+    <div id="map" class="map"></div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript">
         var params = {
-            mapCenter: [104.3, 35.8],
+            mapCenter: [104.3, 37.8],
             zoom: 5,
-            canvasAlpha: 0.6,
-            w: 961,
-            h: 541
+            w: 1001,
+            h: 741,
+            canvasAlpha: 0.8,//canvas图层透明度
+            colors: ["#00E400", "#FFFF00", "#FF7E00", "#FF0000", "#99004C", "#7E0023"]
         };
         var gradient = [{
             value: 0,
@@ -74,12 +77,22 @@
             g: 0,
             b: 8
         }];
-        var bmap = new BMap.Map("mapDiv");
-        var centerPoint = new BMap.Point(params.mapCenter[0], params.mapCenter[1]);
-        bmap.centerAndZoom(centerPoint, params.zoom);
-        bmap.enableScrollWheelZoom();
+        var projection4326 = ol.proj.get('EPSG:4326');
+        var source;
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat(params.mapCenter),
+                zoom: params.zoom
+            })
+        });
         var data = [], polygonData = [];
-        var wi = (135.4 - 73.2) / 960, hi = (53.8 - 17.8) / 540;
+        var wi = (135.4 - 73.2) / (params.w - 1), hi = (53.8 - 17.8) / (params.h - 1);
         function getData(lng, lat) {
             var i = Math.floor((lng - 73.2) / wi);
             var j = Math.floor((lat - 17.8) / hi);
@@ -98,9 +111,8 @@
             var j = Math.round((lat - 17.8) / hi);
             return polygonData[i][j];
         }
-
         var image = new Image();
-        image.src = "/Content/2020062315.png";
+        image.src = "/Content/2020062317.png";
         image.onload = function () {
             var canvas = document.createElement('canvas');
             canvas.width = params.w;
@@ -118,22 +130,22 @@
                     data[i][j] = r * 256 + g;
                 }
             }
-            var canvasLayer = new BMap.CanvasLayer({
-                update: function () {
+            var source = new ol.source.ImageCanvas({
+                canvasFunction: (extent, resolution, pixelRatio, size, projection) => {
                     console.time("update");
-                    var canvas = this.canvas;
+                    var canvas = document.createElement('canvas');
+                    canvas.width = size[0];
+                    canvas.height = size[1];
                     var ctx = canvas.getContext("2d");
-                    canvas.getContext('2d').globalAlpha = params.canvasAlpha;
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    var r, g, b;
-                    //var m = bmap.getZoom() - params.zoom, w = m * 2 + 1;
-                    var m = 1, w = 3;
-                    for (var x = m; x < canvas.width; x += w) {
-                        for (var y = m; y < canvas.height; y += w) {
-                            var point = bmap.pixelToPoint(new BMap.Pixel(x, y));
-                            if (point.lng >= 73.2 && point.lng <= 135.4 && point.lat >= 17.8 && point.lat <= 53.8) {
-                                if (polygonData.length == 0 || isIn(point.lng, point.lat)) {
-                                    var z = getData(point.lng, point.lat);
+                    ctx.globalAlpha = params.canvasAlpha;
+                    var w = 3, m = 1;
+                    for (var x = m; x < size[0]; x += w) {
+                        for (var y = m; y < size[1]; y += w) {
+                            var point = ol.proj.toLonLat([extent[0] + resolution * x, extent[3] - resolution * y]);
+                            if (point[0] >= 73.2 && point[0] <= 135.4 && point[1] >= 17.8 && point[1] <= 53.8) {
+                                if (polygonData.length == 0 || isIn(point[0], point[1])) {
+                                    var z = getData(point[0], point[1]);
+                                    // 按AQI渐变
                                     for (var k = 1, l = 0; k < gradient.length; l = k++) {
                                         if (z <= gradient[k].value) {
                                             var t = (gradient[k].value - z) / (gradient[k].value - gradient[l].value);
@@ -144,16 +156,25 @@
                                         }
                                     }
                                     ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+                                    // 按等级
+                                    //ctx.fillStyle = params.colors[Math.floor(z / 50)];
+
                                     ctx.fillRect(x - m, y - m, w, w);
                                 }
                             }
                         }
                     }
                     console.timeEnd("update");
+                    console.log(canvas.toDataURL());
                     return canvas;
-                }
+                },
+                ratio: 1
             });
-            bmap.addOverlay(canvasLayer);
+            var layer = new ol.layer.Image({
+                source: source,
+                map: map,
+                opacity: params.canvasAlpha
+            });
             image.src = "/Content/polygonschina.png";
             image.onload = function () {
                 ctx.drawImage(image, 0, 0, params.w, params.h);
