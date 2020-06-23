@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
@@ -25,6 +26,10 @@ namespace SAW.ConsoleApp
 
         static void Main(string[] args)
         {
+            Color color = Color.FromArgb(0, 1, 2, 3);
+            int argb = color.ToArgb();
+            color = Color.FromArgb(argb);
+
             //ILog logger = LogManager.GetLogger<Program>();
             //foreach (DriveInfo di in DriveInfo.GetDrives())
             //{

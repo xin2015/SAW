@@ -19,7 +19,7 @@ namespace SAW.WebApplication.Controllers
         {
             using (DataCenterServiceClient client = new DataCenterServiceClient())
             {
-                StationHourData[] data = client.GetStationHourDataListFromHistoryByTime("GDAEIB", "2019!@GD", DateTime.Today.AddDays(-1));
+                StationHourData[] data = client.GetStationHourDataListFromLive("GDAEIB", "2019!@GD");
                 data = data.Where(o => o.AQI != "—").ToArray();
                 List<double> t = new List<double>(), x = new List<double>(), y = new List<double>();
                 int i = 0;
@@ -54,10 +54,10 @@ namespace SAW.WebApplication.Controllers
                 }
                 VariogramSrc variogram = KrigingSrc.Train(t.ToArray(), x.ToArray(), y.ToArray(), KrigingModelSrc.Exponential, 0, 100);
                 List<double> list = new List<double>();
-                Bitmap bitmap = new Bitmap(1001, 1001);
+                Bitmap bitmap = new Bitmap(961, 541);
                 i = 0;
-                w = (135.4 - 73.2) / 1000;
-                h = (53.8 - 17.8) / 1000;
+                w = (135.4 - 73.2) / 960;
+                h = (53.8 - 17.8) / 540;
                 for (double lon = 73.2; lon <= 135.4; lon += w)
                 {
                     int j = 0;
@@ -68,7 +68,7 @@ namespace SAW.WebApplication.Controllers
                     }
                     i++;
                 }
-                bitmap.Save("D:\\" + DateTime.Today.AddDays(-1).ToString("yyyyMMdd") + ".png");
+                bitmap.Save("D:\\" + data.First().TimePoint.ToString("yyyyMMddHH") + ".png");
                 bitmap.Dispose();
             }
             return View();
@@ -219,6 +219,11 @@ namespace SAW.WebApplication.Controllers
         }
 
         public ActionResult TestPNG()
+        {
+            return View();
+        }
+
+        public ActionResult TestPolygons()
         {
             return View();
         }

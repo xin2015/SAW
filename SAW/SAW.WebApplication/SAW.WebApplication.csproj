@@ -164,10 +164,10 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Content\20200621.png" />
-    <Content Include="Content\20200622.png" />
+    <Content Include="Content\2020062315.png" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\polygonschina.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -265,6 +265,7 @@
     <Content Include="Views\Home\Temp.cshtml" />
     <Content Include="Views\Home\TianQi.cshtml" />
     <Content Include="Views\Home\TestPNG.cshtml" />
+    <Content Include="Views\Home\TestPolygons.cshtml" />
     <None Include="Views\Map\BaiDuTileLayer.cshtml" />
     <None Include="Views\Map\BaiDuTileLayerTianDiTu.cshtml" />
     <Content Include="Views\Map\OpenLayersBMap.cshtml" />

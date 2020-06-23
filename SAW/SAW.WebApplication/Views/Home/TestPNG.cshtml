@@ -30,8 +30,8 @@
             mapCenter: [104.3, 35.8],
             zoom: 5,
             canvasAlpha: 0.6,
-            w: 1001,
-            h: 1001
+            w: 961,
+            h: 541
         };
         var gradient = [{
             value: 0,
@@ -78,77 +78,74 @@
         var centerPoint = new BMap.Point(params.mapCenter[0], params.mapCenter[1]);
         bmap.centerAndZoom(centerPoint, params.zoom);
         bmap.enableScrollWheelZoom();
-        var data = [];
-        var wi = (135.4 - 73.2) / 1000, hi = (53.8 - 17.8) / 1000;
+        var data = [], polygonData = [];
+        var wi = (135.4 - 73.2) / 960, hi = (53.8 - 17.8) / 540;
         function getData(lng, lat) {
             var i = Math.floor((lng - 73.2) / wi);
             var j = Math.floor((lat - 17.8) / hi);
             return bilinearInterpolate((lng - 73.2) / wi - i, (lat - 17.8) / hi - j, data[i][j], data[i + 1][j], data[i][j + 1], data[i + 1][j + 1]);
         }
 
-        //function getData(lng, lat) {
-        //    var lngi = Math.round(lng * 10) / 10;
-        //    var lati = Math.round(lat * 10) / 10;
-        //    var i = Math.round((lngi - 73.2) * 10), j = Math.round((lati - 17.8) * 10);
-        //    return data[i][j];
-        //}
-
         function bilinearInterpolate(x, y, g00, g10, g01, g11) {
             var rx = (1 - x);
             var ry = (1 - y);
             var a = rx * ry, b = x * ry, c = rx * y, d = x * y;
             return g00 * a + g10 * b + g01 * c + g11 * d;
-        };
+        }
+
+        function isIn(lng, lat) {
+            var i = Math.round((lng - 73.2) / wi);
+            var j = Math.round((lat - 17.8) / hi);
+            return polygonData[i][j];
+        }
 
         var image = new Image();
-        image.src = "/Content/20200622.png";
+        image.src = "/Content/2020062315.png";
         image.onload = function () {
+            var canvas = document.createElement('canvas');
+            canvas.width = params.w;
+            canvas.height = params.h;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(image, 0, 0, params.w, params.h);
+            var imageData = ctx.getImageData(0, 0, params.w, params.h).data;
+            for (var j = 0; j < params.h; j++) {
+                for (var i = 0; i < params.w; i++) {
+                    if (j == 0) {
+                        data[i] = [];
+                    }
+                    var r = imageData[j * params.w * 4 + i * 4];
+                    var g = imageData[j * params.w * 4 + i * 4 + 1];
+                    data[i][j] = r * 256 + g;
+                }
+            }
             var canvasLayer = new BMap.CanvasLayer({
                 update: function () {
                     console.time("update");
                     var canvas = this.canvas;
                     var ctx = canvas.getContext("2d");
-                    if (data.length == 0) {
-                        ctx.drawImage(image, 0, 0);
-                        var imageData = ctx.getImageData(0, 0, params.w, params.h).data;
-                        for (var i = 0; i < params.w; i++) {
-                            var temp = [];
-                            for (var j = 0; j < params.h; j++) {
-                                var r = imageData[i * params.h * 4 + j * 4];
-                                var g = imageData[i * params.h * 4 + j * 4 + 1];
-                                temp[j] = r * 256 + g;
-                            }
-                            data[i] = temp;
-                        }
-                    }
                     canvas.getContext('2d').globalAlpha = params.canvasAlpha;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     var r, g, b;
-                    var w = 3, m = 1;
+                    //var m = bmap.getZoom() - params.zoom, w = m * 2 + 1;
+                    var m = 1, w = 3;
                     for (var x = m; x < canvas.width; x += w) {
                         for (var y = m; y < canvas.height; y += w) {
                             var point = bmap.pixelToPoint(new BMap.Pixel(x, y));
                             if (point.lng >= 73.2 && point.lng <= 135.4 && point.lat >= 17.8 && point.lat <= 53.8) {
-                                var z = getData(point.lng, point.lat);
-                                for (var k = 1, l = 0; k < gradient.length; l = k++) {
-                                    if (z <= gradient[k].value) {
-                                        var t = (gradient[k].value - z) / (gradient[k].value - gradient[l].value);
-                                        r = gradient[k].r - Math.round(t * (gradient[k].r - gradient[l].r));
-                                        g = gradient[k].g - Math.round(t * (gradient[k].g - gradient[l].g));
-                                        b = gradient[k].b - Math.round(t * (gradient[k].b - gradient[l].b));
-                                        break;
+                                if (polygonData.length == 0 || isIn(point.lng, point.lat)) {
+                                    var z = getData(point.lng, point.lat);
+                                    for (var k = 1, l = 0; k < gradient.length; l = k++) {
+                                        if (z <= gradient[k].value) {
+                                            var t = (gradient[k].value - z) / (gradient[k].value - gradient[l].value);
+                                            r = gradient[k].r - Math.round(t * (gradient[k].r - gradient[l].r));
+                                            g = gradient[k].g - Math.round(t * (gradient[k].g - gradient[l].g));
+                                            b = gradient[k].b - Math.round(t * (gradient[k].b - gradient[l].b));
+                                            break;
+                                        }
                                     }
+                                    ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+                                    ctx.fillRect(x - m, y - m, w, w);
                                 }
-                                //for (var k = 1, l = 0; k < gradient.length; l = k++) {
-                                //    if (z <= gradient[k].value) {
-                                //        r = gradient[k].r;
-                                //        g = gradient[k].g;
-                                //        b = gradient[k].b;
-                                //        break;
-                                //    }
-                                //}
-                                ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
-                                ctx.fillRect(x - m, y - m, w, w);
                             }
                         }
                     }
@@ -157,6 +154,20 @@
                 }
             });
             bmap.addOverlay(canvasLayer);
+            //image.src = "/Content/polygonschina.png";
+            //image.onload = function () {
+            //    ctx.drawImage(image, 0, 0, params.w, params.h);
+            //    imageData = ctx.getImageData(0, 0, params.w, params.h).data;
+            //    for (var j = 0; j < params.h; j++) {
+            //        for (var i = 0; i < params.w; i++) {
+            //            if (j == 0) {
+            //                polygonData[i] = [];
+            //            }
+            //            var r = imageData[j * params.w * 4 + i * 4];
+            //            polygonData[i][j] = r == 255;
+            //        }
+            //    }
+            //}
         }
     </script>
 </body>
