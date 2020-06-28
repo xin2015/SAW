@@ -17,16 +17,99 @@ namespace SAW.WebApplication.Controllers
     {
         public ActionResult Index()
         {
+            return View();
+        }
+
+        private void GetAirQualityPNG(double[] t, double[] x, double[] y, double[] extent, string fileName)
+        {
+            VariogramSrc variogram = KrigingSrc.Train(t, x, y, KrigingModelSrc.Exponential, 0, 100);
+            int width = 1001, height = 741;
+            Bitmap bitmap = new Bitmap(width, height);
+            int i = 0;
+            double w = (extent[2] - extent[0]) / (width - 1);
+            double h = (extent[3] - extent[1]) / (height - 1);
+            for (double lon = extent[0]; lon <= extent[2]; lon += w)
+            {
+                int j = 0;
+                for (double lat = extent[1]; lat <= extent[3]; lat += h)
+                {
+                    int aqi = (int)Math.Round(KrigingSrc.Predict(lon, lat, variogram));
+                    bitmap.SetPixel(i, j++, Color.FromArgb(aqi / 256, aqi % 256, 0));
+                }
+                i++;
+            }
+            bitmap.Save(fileName);
+            bitmap.Dispose();
+        }
+
+        public ActionResult GetGuangZhouAirQualityPNG()
+        {
+            List<double> t = new List<double>(), x = new List<double>(), y = new List<double>();
+            double[] extent = new double[] { 112.94, 22.49, 114.1, 23.97 };
+            string fileName;
+            using (DataCenterServiceClient client = new DataCenterServiceClient())
+            {
+                StationHourData[] data = client.GetStationHourDataListFromHistoryByTime("GDAEIB", "2019!@GD", new DateTime(2020, 6, 23, 17, 0, 0));
+                data = data.Where(o => o.AQI != "—").ToArray();
+                double[] gdExtent = new double[] { 109.46, 20.05, 117.48, 25.63 };
+                foreach (StationHourData item in data)
+                {
+                    double xi = double.Parse(item.Longitude), yi = double.Parse(item.Latitude);
+                    if (xi >= gdExtent[0] && xi <= gdExtent[2] && yi >= gdExtent[1] && yi <= gdExtent[3])
+                    {
+                        double ti = double.Parse(item.AQI);
+                        t.Add(ti);
+                        x.Add(xi);
+                        y.Add(yi);
+                    }
+                }
+                fileName = string.Format("D:\\440100_{0}.png", data.First().TimePoint.ToString("yyyyMMddHH"));
+            }
+            GetAirQualityPNG(t.ToArray(), x.ToArray(), y.ToArray(), extent, fileName);
+            return View();
+        }
+
+        public ActionResult GetGuangDongAirQualityPNG()
+        {
+            List<double> t = new List<double>(), x = new List<double>(), y = new List<double>();
+            double[] extent = new double[] { 109.46, 20.05, 117.48, 25.63 };
+            string fileName;
+            using (DataCenterServiceClient client = new DataCenterServiceClient())
+            {
+                StationHourData[] data = client.GetStationHourDataListFromHistoryByTime("GDAEIB", "2019!@GD", new DateTime(2020, 6, 23, 17, 0, 0));
+                data = data.Where(o => o.AQI != "—").ToArray();
+                double[] tExtent = new double[] { 106.79, 18.19, 120.15, 27.49 };
+                foreach (StationHourData item in data)
+                {
+                    double xi = double.Parse(item.Longitude), yi = double.Parse(item.Latitude);
+                    if (xi >= tExtent[0] && xi <= tExtent[2] && yi >= tExtent[1] && yi <= tExtent[3])
+                    {
+                        double ti = double.Parse(item.AQI);
+                        t.Add(ti);
+                        x.Add(xi);
+                        y.Add(yi);
+                    }
+                }
+                fileName = string.Format("D:\\440000_{0}.png", data.First().TimePoint.ToString("yyyyMMddHH"));
+            }
+            GetAirQualityPNG(t.ToArray(), x.ToArray(), y.ToArray(), extent, fileName);
+            return View();
+        }
+
+        public ActionResult GetChinaAirQualityPNG()
+        {
+            List<double> t = new List<double>(), x = new List<double>(), y = new List<double>();
+            double[] extent = new double[] { 73.2, 17.8, 135.4, 53.8 };
+            string fileName;
             using (DataCenterServiceClient client = new DataCenterServiceClient())
             {
                 StationHourData[] data = client.GetStationHourDataListFromLive("GDAEIB", "2019!@GD");
                 data = data.Where(o => o.AQI != "—").ToArray();
-                List<double> t = new List<double>(), x = new List<double>(), y = new List<double>();
                 int i = 0;
                 double max = 0, lonm = 0, latm = 0, w = 0.5, h = 0.5;
-                for (double lon = 73.2; lon <= 135.4; lon += w)
+                for (double lon = extent[0]; lon <= extent[2]; lon += w)
                 {
-                    for (double lat = 17.8; lat <= 53.8; lat += w)
+                    for (double lat = extent[1]; lat <= extent[3]; lat += h)
                     {
                         max = 0;
                         for (i = 0; i < data.Length; i++)
@@ -52,26 +135,9 @@ namespace SAW.WebApplication.Controllers
                         }
                     }
                 }
-                VariogramSrc variogram = KrigingSrc.Train(t.ToArray(), x.ToArray(), y.ToArray(), KrigingModelSrc.Exponential, 0, 100);
-                List<double> list = new List<double>();
-                int width = 1001, height = 741;
-                Bitmap bitmap = new Bitmap(width, height);
-                i = 0;
-                w = (135.4 - 73.2) / (width - 1);
-                h = (53.8 - 17.8) / (height - 1);
-                for (double lon = 73.2; lon <= 135.4; lon += w)
-                {
-                    int j = 0;
-                    for (double lat = 17.8; lat <= 53.8; lat += h)
-                    {
-                        int aqi = (int)Math.Round(KrigingSrc.Predict(lon, lat, variogram));
-                        bitmap.SetPixel(i, j++, Color.FromArgb(aqi / 256, aqi % 256, 0));
-                    }
-                    i++;
-                }
-                bitmap.Save("D:\\" + data.First().TimePoint.ToString("yyyyMMddHH") + ".png");
-                bitmap.Dispose();
+                fileName = string.Format("D:\\{0}.png", data.First().TimePoint.ToString("yyyyMMddHH"));
             }
+            GetAirQualityPNG(t.ToArray(), x.ToArray(), y.ToArray(), extent, fileName);
             return View();
         }
 
@@ -230,6 +296,16 @@ namespace SAW.WebApplication.Controllers
         }
 
         public ActionResult GIS()
+        {
+            return View();
+        }
+
+        public ActionResult GISGuangDong()
+        {
+            return View();
+        }
+
+        public ActionResult GISGuangZhou()
         {
             return View();
         }

@@ -7,7 +7,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="OpenLayers" />
-    <title>GIS</title>
+    <title>GISGuangDong</title>
     <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
     <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
     <style type="text/css">
@@ -28,9 +28,9 @@
     <div id="map" class="map"></div>
     <script type="text/javascript">
         var params = {
-            mapCenter: [104.3,37.8],
-            extent: [73.2, 17.8, 135.4, 53.8],
-            zoom: 5,
+            mapCenter: [113.42, 22.94],
+            extent: [109.46, 20.05, 117.48, 25.63],
+            zoom: 8,
             w: 1001,
             h: 741,
             canvasAlpha: 0.8,//canvas图层透明度
@@ -111,7 +111,7 @@
             return polygonData[i][j];
         }
         var image = new Image();
-        image.src = "/Content/2020062317.png";
+        image.src = "/Content/440000_2020062317.png";
         image.onload = function () {
             var canvas = document.createElement('canvas');
             canvas.width = params.w;
@@ -173,7 +173,7 @@
                 map: map,
                 opacity: params.canvasAlpha
             });
-            image.src = "/Content/polygonschina.png";
+            image.src = "/Content/polygons440000.png";
             image.onload = function () {
                 ctx.drawImage(image, 0, 0, params.w, params.h);
                 imageData = ctx.getImageData(0, 0, params.w, params.h).data;

@@ -41,22 +41,11 @@
         canvas.width = width;
         canvas.height = height;
         var ctx = canvas.getContext("2d");
-
-        //for (var i = 0; i < width; i++) {
-        //    for (var j = 0; j < height; j++) {
-        //        ctx.fillStyle = 'rgb(' + i + ',' + j + ',0)';
-        //        ctx.fillRect(i, j, 1, 1);
-        //    }
-        //}
-        //console.log(canvas.toDataURL());
-        //var imageData = ctx.getImageData(0, 0, width, height);
-        //for (var i = 0; i < imageData.data.length; i += 4) {
-        //    var r = imageData.data[i];
-        //    var g = imageData.data[i + 1];
-        //    console.log(r + ',' + g);
-        //}
-        var wi = (135.4 - 73.2) / (width - 1), hi = (53.8 - 17.8) / (height - 1);
-        $.getJSON("/Scripts/china.json", function (result) {
+        //var extent = [73.2, 17.8, 135.4, 53.8];
+        var extent = [109.46, 20.05, 117.48, 25.63];
+        //var extent = [112.94, 22.49, 114.1, 23.97];
+        var wi = (extent[2] - extent[0]) / (width - 1), hi = (extent[3] - extent[1]) / (height - 1);
+        $.getJSON("/Scripts/guang_dong_geo.json", function (result) {
             var china = result;
             var polygons = [];
             for (var h = 0; h < china.features.length; h++) {
@@ -78,9 +67,9 @@
                 }
             }
             var i = 0, j = 0;
-            for (var lon = 73.2; lon <= 135.4; lon += wi) {
+            for (var lon = extent[0]; lon <= extent[2]; lon += wi) {
                 j = 0;
-                for (var lat = 17.8; lat <= 53.8; lat += hi) {
+                for (var lat = extent[1]; lat <= extent[3]; lat += hi) {
                     var isIn = false;
                     for (var k = 0; k < polygons.length; k++) {
                         var points = polygons[k];
