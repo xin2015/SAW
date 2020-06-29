@@ -36,7 +36,7 @@
             }
             return c;
         }
-        var width = 1001, height = 741;
+        var width = 1455, height = 1030;
         var canvas = document.getElementById('canvas');
         canvas.width = width;
         canvas.height = height;
@@ -45,7 +45,7 @@
         var extent = [109.46, 20.05, 117.48, 25.63];
         //var extent = [112.94, 22.49, 114.1, 23.97];
         var wi = (extent[2] - extent[0]) / (width - 1), hi = (extent[3] - extent[1]) / (height - 1);
-        $.getJSON("/Scripts/guang_dong_geo.json", function (result) {
+        $.getJSON("/Scripts/gd.json", function (result) {
             var china = result;
             var polygons = [];
             for (var h = 0; h < china.features.length; h++) {

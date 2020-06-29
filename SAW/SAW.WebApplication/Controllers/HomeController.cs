@@ -23,7 +23,8 @@ namespace SAW.WebApplication.Controllers
         private void GetAirQualityPNG(double[] t, double[] x, double[] y, double[] extent, string fileName)
         {
             VariogramSrc variogram = KrigingSrc.Train(t, x, y, KrigingModelSrc.Exponential, 0, 100);
-            int width = 1001, height = 741;
+            //int width = 1001, height = 741;
+            int width = 1455, height = 1030;
             Bitmap bitmap = new Bitmap(width, height);
             int i = 0;
             double w = (extent[2] - extent[0]) / (width - 1);
