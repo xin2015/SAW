@@ -11,5 +11,11 @@
 <input id="d127" class="form-control" type="text" onclick="WdatePicker({ dateFmt: 'yyyy年', isShowWeek: true})" />
 
 @section scripts{
-<script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script src="~/Scripts/kriging.js"></script>
+    <script type="text/javascript">
+        var t = [25, 26, 27, 35, 19, 27, 22, 47, 23], x = [113.235, 113.261, 113.348, 113.433, 113.352, 113.215, 113.26, 113.568, 113.281], y = [23.1422, 23.105, 23.0916, 23.105, 22.9477, 23.3917, 23.1331, 23.2783, 23.1569];
+        var variogram = kriging.train(t, x, y, 'exponential', 0, 100);
+        console.log(kriging.predict(113.589, 23.5538, variogram));
+    </script>
 }

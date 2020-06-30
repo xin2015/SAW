@@ -28,11 +28,10 @@
     <div id="map" class="map"></div>
     <script type="text/javascript">
         var params = {
-            mapCenter: [104.3,37.8],
+            mapCenter: [104.3, 37.8],
             extent: [73.2, 17.8, 135.4, 53.8],
             zoom: 5,
-            w: 1001,
-            h: 741,
+            w: 1024,
             canvasAlpha: 0.8,//canvas图层透明度
             colors: ["#00E400", "#FFFF00", "#FF7E00", "#FF0000", "#99004C", "#7E0023"]
         };
@@ -91,11 +90,12 @@
             })
         });
         var data = [], polygonData = [];
-        var wi = (params.extent[2] - params.extent[0]) / (params.w - 1), hi = (params.extent[3] - params.extent[1]) / (params.h - 1);
+        var resolution = (params.extent[2] - params.extent[0]) / (params.w - 1);
+        var width = Math.round((params.extent[2] - params.extent[0]) / resolution) + 1, height = Math.round((params.extent[3] - params.extent[1]) / resolution) + 1;
         function getData(lng, lat) {
-            var i = Math.floor((lng - params.extent[0]) / wi);
-            var j = Math.floor((lat - params.extent[1]) / hi);
-            return bilinearInterpolate((lng - params.extent[0]) / wi - i, (lat - params.extent[1]) / hi - j, data[i][j], data[i + 1][j], data[i][j + 1], data[i + 1][j + 1]);
+            var xi = (lng - params.extent[0]) / resolution, yi = (params.extent[3] - lat) / resolution;
+            var i = Math.floor(xi), j = Math.floor(yi);
+            return bilinearInterpolate(xi - i, yi - j, data[i][j], data[i + 1][j], data[i][j + 1], data[i + 1][j + 1]);
         }
 
         function bilinearInterpolate(x, y, g00, g10, g01, g11) {
@@ -106,26 +106,26 @@
         }
 
         function isIn(lng, lat) {
-            var i = Math.round((lng - params.extent[0]) / wi);
-            var j = Math.round((lat - params.extent[1]) / hi);
+            var i = Math.floor((lng - params.extent[0]) / resolution);
+            var j = Math.floor((params.extent[3] - lat) / resolution);
             return polygonData[i][j];
         }
         var image = new Image();
-        image.src = "/Content/2020062317.png";
+        image.src = "/Content/2020063013.png";
         image.onload = function () {
             var canvas = document.createElement('canvas');
-            canvas.width = params.w;
-            canvas.height = params.h;
+            canvas.width = width;
+            canvas.height = height;
             var ctx = canvas.getContext("2d");
-            ctx.drawImage(image, 0, 0, params.w, params.h);
-            var imageData = ctx.getImageData(0, 0, params.w, params.h).data;
-            for (var j = 0; j < params.h; j++) {
-                for (var i = 0; i < params.w; i++) {
+            ctx.drawImage(image, 0, 0, width, height);
+            var imageData = ctx.getImageData(0, 0, width, height).data;
+            for (var j = 0; j < height; j++) {
+                for (var i = 0; i < width; i++) {
                     if (j == 0) {
                         data[i] = [];
                     }
-                    var r = imageData[j * params.w * 4 + i * 4];
-                    var g = imageData[j * params.w * 4 + i * 4 + 1];
+                    var r = imageData[j * width * 4 + i * 4];
+                    var g = imageData[j * width * 4 + i * 4 + 1];
                     data[i][j] = r * 256 + g;
                 }
             }
@@ -175,14 +175,14 @@
             });
             image.src = "/Content/polygonschina.png";
             image.onload = function () {
-                ctx.drawImage(image, 0, 0, params.w, params.h);
-                imageData = ctx.getImageData(0, 0, params.w, params.h).data;
-                for (var j = 0; j < params.h; j++) {
-                    for (var i = 0; i < params.w; i++) {
+                ctx.drawImage(image, 0, 0, width, height);
+                imageData = ctx.getImageData(0, 0, width, height).data;
+                for (var j = 0; j < height; j++) {
+                    for (var i = 0; i < width; i++) {
                         if (j == 0) {
                             polygonData[i] = [];
                         }
-                        var r = imageData[j * params.w * 4 + i * 4];
+                        var r = imageData[j * width * 4 + i * 4];
                         polygonData[i][j] = r == 255;
                     }
                 }

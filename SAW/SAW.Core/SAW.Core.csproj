@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +55,7 @@
     <Compile Include="Extensions\ByteExtension.cs" />
     <Compile Include="Extensions\StringExtension.cs" />
     <Compile Include="Helpers\BatHelper.cs" />
+    <Compile Include="Helpers\BitmapHelper.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\FtpHelper.cs" />
     <Compile Include="Helpers\HashHelper.cs" />

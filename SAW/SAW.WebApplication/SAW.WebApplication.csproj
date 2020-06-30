@@ -166,6 +166,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="Content\2020062317.png" />
+    <Content Include="Content\2020063013.png" />
     <Content Include="Content\440000_2020062317.png" />
     <Content Include="Content\440100_2020062317.png" />
     <Content Include="Content\bootstrap.css" />
@@ -276,6 +277,7 @@
     <Content Include="Views\Home\GIS.cshtml" />
     <Content Include="Views\Home\GISGuangDong.cshtml" />
     <Content Include="Views\Home\GISGuangZhou.cshtml" />
+    <Content Include="Views\Home\DrawChinaPolygons.cshtml" />
     <None Include="Views\Map\BaiDuTileLayer.cshtml" />
     <None Include="Views\Map\BaiDuTileLayerTianDiTu.cshtml" />
     <Content Include="Views\Map\OpenLayersBMap.cshtml" />

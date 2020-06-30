@@ -20,29 +20,6 @@ namespace SAW.WebApplication.Controllers
             return View();
         }
 
-        private void GetAirQualityPNG(double[] t, double[] x, double[] y, double[] extent, string fileName)
-        {
-            VariogramSrc variogram = KrigingSrc.Train(t, x, y, KrigingModelSrc.Exponential, 0, 100);
-            //int width = 1001, height = 741;
-            int width = 1455, height = 1030;
-            Bitmap bitmap = new Bitmap(width, height);
-            int i = 0;
-            double w = (extent[2] - extent[0]) / (width - 1);
-            double h = (extent[3] - extent[1]) / (height - 1);
-            for (double lon = extent[0]; lon <= extent[2]; lon += w)
-            {
-                int j = 0;
-                for (double lat = extent[1]; lat <= extent[3]; lat += h)
-                {
-                    int aqi = (int)Math.Round(KrigingSrc.Predict(lon, lat, variogram));
-                    bitmap.SetPixel(i, j++, Color.FromArgb(aqi / 256, aqi % 256, 0));
-                }
-                i++;
-            }
-            bitmap.Save(fileName);
-            bitmap.Dispose();
-        }
-
         public ActionResult GetGuangZhouAirQualityPNG()
         {
             List<double> t = new List<double>(), x = new List<double>(), y = new List<double>();
@@ -66,8 +43,9 @@ namespace SAW.WebApplication.Controllers
                 }
                 fileName = string.Format("D:\\440100_{0}.png", data.First().TimePoint.ToString("yyyyMMddHH"));
             }
-            GetAirQualityPNG(t.ToArray(), x.ToArray(), y.ToArray(), extent, fileName);
-            return View();
+            double resolution = (extent[2] - extent[0]) / 1023;
+            BitmapHelper.DrawGrid(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName);
+            return Content("Done");
         }
 
         public ActionResult GetGuangDongAirQualityPNG()
@@ -93,8 +71,9 @@ namespace SAW.WebApplication.Controllers
                 }
                 fileName = string.Format("D:\\440000_{0}.png", data.First().TimePoint.ToString("yyyyMMddHH"));
             }
-            GetAirQualityPNG(t.ToArray(), x.ToArray(), y.ToArray(), extent, fileName);
-            return View();
+            double resolution = (extent[2] - extent[0]) / 1023;
+            BitmapHelper.DrawGrid(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName);
+            return Content("Done");
         }
 
         public ActionResult GetChinaAirQualityPNG()
@@ -138,8 +117,9 @@ namespace SAW.WebApplication.Controllers
                 }
                 fileName = string.Format("D:\\{0}.png", data.First().TimePoint.ToString("yyyyMMddHH"));
             }
-            GetAirQualityPNG(t.ToArray(), x.ToArray(), y.ToArray(), extent, fileName);
-            return View();
+            double resolution = (extent[2] - extent[0]) / 1023;
+            BitmapHelper.DrawGrid(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName);
+            return Content("Done");
         }
 
         public ActionResult Test()
@@ -307,6 +287,11 @@ namespace SAW.WebApplication.Controllers
         }
 
         public ActionResult GISGuangZhou()
+        {
+            return View();
+        }
+
+        public ActionResult DrawChinaPolygons()
         {
             return View();
         }
