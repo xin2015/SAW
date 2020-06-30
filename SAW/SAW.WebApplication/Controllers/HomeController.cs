@@ -295,6 +295,16 @@ namespace SAW.WebApplication.Controllers
         {
             return View();
         }
+
+        public ActionResult DrawGuangDongPolygons()
+        {
+            return View();
+        }
+
+        public ActionResult DrawGuangZhouPolygons()
+        {
+            return View();
+        }
     }
 
     class LoginInfo

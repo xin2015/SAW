@@ -204,9 +204,8 @@
     </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\440100.json" />
-    <Content Include="Scripts\china.json" />
+    <Content Include="Scripts\china_geo.json" />
     <Content Include="Scripts\guang_dong_geo.json" />
-    <None Include="Scripts\gd.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -278,6 +277,8 @@
     <Content Include="Views\Home\GISGuangDong.cshtml" />
     <Content Include="Views\Home\GISGuangZhou.cshtml" />
     <Content Include="Views\Home\DrawChinaPolygons.cshtml" />
+    <Content Include="Views\Home\DrawGuangDongPolygons.cshtml" />
+    <Content Include="Views\Home\DrawGuangZhouPolygons.cshtml" />
     <None Include="Views\Map\BaiDuTileLayer.cshtml" />
     <None Include="Views\Map\BaiDuTileLayerTianDiTu.cshtml" />
     <Content Include="Views\Map\OpenLayersBMap.cshtml" />
