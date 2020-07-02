@@ -95,23 +95,36 @@
                 zoom: params.zoom
             })
         });
-        map.addLayer(new ol.layer.Tile({
-            source: new ol.source.WMTS({
-                name: "天地图全国矢量电子地图底图",
-                url: "http://t0.tianditu.gov.cn/vec_w/wmts?tk=fdcab2d88e293c189daf038cd01592e6",
-                layer: "vec",
-                style: "default",
-                matrixSet: "w",
-                format: "tiles",
-                wrapX: true,
-                tileGrid: new ol.tilegrid.WMTS({
-                    origin: ol.extent.getTopLeft(projectionExtent),
-                    resolutions: resolutions,
-                    matrixIds: matrixIds
+        //map.addLayer(new ol.layer.Tile({
+        //    source: new ol.source.WMTS({
+        //        name: "天地图全国矢量电子地图底图",
+        //        url: "http://t0.tianditu.gov.cn/vec_w/wmts?tk=fdcab2d88e293c189daf038cd01592e6",
+        //        layer: "vec",
+        //        style: "default",
+        //        matrixSet: "w",
+        //        format: "tiles",
+        //        wrapX: true,
+        //        tileGrid: new ol.tilegrid.WMTS({
+        //            origin: ol.extent.getTopLeft(projectionExtent),
+        //            resolutions: resolutions,
+        //            matrixIds: matrixIds
+        //        })
+        //    })
+        //}));
+        map.addLayer(new ol.layer.Vector({
+            source: new ol.source.Vector({
+                projection: 'EPSG:4326',
+                url: '/Scripts/100000_full.json',
+                format: new ol.format.GeoJSON()
+            }),
+            style: new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'black',
+                    width: 2
                 })
             })
         }));
-        
+
         var data = [], polygonData = [];
         var resolution = (params.extent[2] - params.extent[0]) / (params.w - 1);
         var width = Math.round((params.extent[2] - params.extent[0]) / resolution) + 1, height = Math.round((params.extent[3] - params.extent[1]) / resolution) + 1;

@@ -13,5 +13,15 @@ namespace SAW.WebApplication.Controllers
         {
             return View();
         }
+
+        public ActionResult GeoJsonChina()
+        {
+            return View();
+        }
+
+        public ActionResult Test()
+        {
+            return View();
+        }
     }
 }

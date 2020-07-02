@@ -296,6 +296,11 @@ namespace SAW.WebApplication.Controllers
             return View();
         }
 
+        public ActionResult DrawChinaPolygons2()
+        {
+            return View();
+        }
+
         public ActionResult DrawGuangDongPolygons()
         {
             return View();

@@ -206,6 +206,8 @@
     <Content Include="Scripts\440100.json" />
     <Content Include="Scripts\china_geo.json" />
     <Content Include="Scripts\guang_dong_geo.json" />
+    <Content Include="Scripts\100000.json" />
+    <Content Include="Scripts\100000_full.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -279,6 +281,7 @@
     <Content Include="Views\Home\DrawChinaPolygons.cshtml" />
     <Content Include="Views\Home\DrawGuangDongPolygons.cshtml" />
     <Content Include="Views\Home\DrawGuangZhouPolygons.cshtml" />
+    <Content Include="Views\Home\DrawChinaPolygons2.cshtml" />
     <None Include="Views\Map\BaiDuTileLayer.cshtml" />
     <None Include="Views\Map\BaiDuTileLayerTianDiTu.cshtml" />
     <Content Include="Views\Map\OpenLayersBMap.cshtml" />
@@ -291,6 +294,8 @@
     <Content Include="Views\Map\TianDiTuIndex.cshtml" />
     <Content Include="Views\Map\KrigingGZ2.cshtml" />
     <Content Include="Views\OpenLayers\Index.cshtml" />
+    <Content Include="Views\OpenLayers\GeoJsonChina.cshtml" />
+    <Content Include="Views\OpenLayers\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
