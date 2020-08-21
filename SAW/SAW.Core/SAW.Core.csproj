@@ -68,6 +68,10 @@
     <Compile Include="Helpers\SqlHelper.cs" />
     <Compile Include="Helpers\XmlSerializerHelper.cs" />
     <Compile Include="Helpers\ZipHelper.cs" />
+    <Compile Include="InterpolationAlgorithm\BilinearInterpolation.cs" />
+    <Compile Include="InterpolationAlgorithm\BilinearInterpolationMatrix.cs" />
+    <Compile Include="InterpolationAlgorithm\IDWMatrix.cs" />
+    <Compile Include="InterpolationAlgorithm\IDW.cs" />
     <Compile Include="InterpolationAlgorithm\Kriging.cs" />
     <Compile Include="InterpolationAlgorithm\KrigingSrc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

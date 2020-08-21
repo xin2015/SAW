@@ -50,9 +50,9 @@
             target: 'map',
             layers: [layer],
             view: new ol.View({
-                projection: 'EPSG:4326',
-                center: [104, 30],
-                //center: ol.proj.fromLonLat([104.299, 30.48]),
+                //projection: 'EPSG:4326',
+                //center: [104, 30],
+                center: ol.proj.fromLonLat([104.299, 30.48]),
                 zoom: 5
             })
         });
