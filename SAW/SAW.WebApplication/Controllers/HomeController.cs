@@ -44,7 +44,7 @@ namespace SAW.WebApplication.Controllers
                 fileName = string.Format("D:\\440100_{0}.png", data.First().TimePoint.ToString("yyyyMMddHH"));
             }
             double resolution = (extent[2] - extent[0]) / 1023;
-            BitmapHelper.DrawGrid(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName);
+            BitmapHelper.DrawGridByKriging(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName);
             return Content("Done");
         }
 
@@ -72,7 +72,7 @@ namespace SAW.WebApplication.Controllers
                 fileName = string.Format("D:\\440000_{0}.png", data.First().TimePoint.ToString("yyyyMMddHH"));
             }
             double resolution = (extent[2] - extent[0]) / 1023;
-            BitmapHelper.DrawGrid(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName);
+            BitmapHelper.DrawGridByKriging(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName);
             return Content("Done");
         }
 
@@ -80,7 +80,10 @@ namespace SAW.WebApplication.Controllers
         {
             List<double> t = new List<double>(), x = new List<double>(), y = new List<double>();
             double[] extent = new double[] { 73.2, 17.8, 135.4, 53.8 };
-            string fileName;
+            string fileName1;
+            string fileName2;
+            string fileName3;
+            string fileName4;
             using (DataCenterServiceClient client = new DataCenterServiceClient())
             {
                 StationHourData[] data = client.GetStationHourDataListFromLive("GDAEIB", "2019!@GD");
@@ -115,10 +118,16 @@ namespace SAW.WebApplication.Controllers
                         }
                     }
                 }
-                fileName = string.Format("D:\\{0}.png", data.First().TimePoint.ToString("yyyyMMddHH"));
+                fileName1 = string.Format("D:\\{0}_IDW1.png", data.First().TimePoint.ToString("yyyyMMddHH"));
+                fileName2 = string.Format("D:\\{0}_IDW2.png", data.First().TimePoint.ToString("yyyyMMddHH"));
+                fileName3 = string.Format("D:\\{0}_IDW3.png", data.First().TimePoint.ToString("yyyyMMddHH"));
+                fileName4 = string.Format("D:\\{0}_IDW4.png", data.First().TimePoint.ToString("yyyyMMddHH"));
             }
             double resolution = (extent[2] - extent[0]) / 1023;
-            BitmapHelper.DrawGrid(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName);
+            BitmapHelper.DrawGridByIDW1(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName1);
+            BitmapHelper.DrawGridByIDW2(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName2);
+            BitmapHelper.DrawGridByIDW3(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName3);
+            BitmapHelper.DrawGridByIDW4(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName4);
             return Content("Done");
         }
 
@@ -311,7 +320,32 @@ namespace SAW.WebApplication.Controllers
             return View();
         }
 
-
+        public ActionResult TestIDW(DateTime time)
+        {
+            IDW idw;
+            Kriging kriging;
+            using (DataCenterServiceClient client = new DataCenterServiceClient())
+            {
+                StationHourData[] data = client.GetStationHourDataListFromHistoryByTime("GDAEIB", "2019!@GD", time);
+                data = data.Where(o => o.AQI != "—").ToArray();
+                double[] X = new double[data.Length], Y = new double[data.Length], T = new double[data.Length];
+                for (int i = 0; i < data.Length; i++)
+                {
+                    StationHourData item = data[i];
+                    double x = double.Parse(item.Longitude), y = double.Parse(item.Latitude);
+                    double t = double.Parse(item.AQI);
+                    X[i] = x;
+                    Y[i] = y;
+                    T[i] = t;
+                }
+                idw = new IDW(X, Y, T, 2);
+                kriging = new Kriging(X, Y, T);
+            }
+            double temp = idw.Predict(112, 36);
+            kriging.Train(KrigingModel.Exponential, 0, 100);
+            temp = kriging.Predict(112, 36);
+            return Content(temp.ToString());
+        }
     }
 
     class LoginInfo

@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace SAW.Core.InterpolationAlgorithm
 {
-    public class IDW
+    public class IDW : IPredict
     {
         public double[] X { get; set; }
         public double[] Y { get; set; }
         public double[] T { get; set; }
         public double P { get; set; }
 
-        public IDW(double[] X, double[] Y, double[] T, double p)
+        public IDW(double[] X, double[] Y, double[] T, double p = 2)
         {
             this.X = X;
             this.Y = Y;
@@ -21,7 +21,7 @@ namespace SAW.Core.InterpolationAlgorithm
             P = -p / 2;
         }
 
-        public double GetValue(double x, double y)
+        public double Predict(double x, double y)
         {
             int length = T.Length;
             double asum = 0, sum = 0;

@@ -26,9 +26,6 @@ namespace SAW.ConsoleApp
 
         static void Main(string[] args)
         {
-            Color color = Color.FromArgb(0, 1, 2, 3);
-            int argb = color.ToArgb();
-            color = Color.FromArgb(argb);
 
             //ILog logger = LogManager.GetLogger<Program>();
             //foreach (DriveInfo di in DriveInfo.GetDrives())
@@ -153,8 +150,6 @@ namespace SAW.ConsoleApp
             //Console.WriteLine(Kriging.Predict(2, 2, variogram));
             //Console.ReadLine();
 
-
-
             //Random rand = new Random();
             //int sampleCount = 100;
             //double[][] sources = new double[sampleCount][];
@@ -172,61 +167,6 @@ namespace SAW.ConsoleApp
             //    string text = wc.DownloadString(url);
             //}
             //Console.ReadLine();
-
         }
-
-        static SRSystem GetSRSystem()
-        {
-            return new SRSystem()
-            {
-                Version = string.Format("{0}.{1}.{2}.{3}", rand.Next(20), rand.Next(20), rand.Next(20), rand.Next(20)),
-                Price = rand.Next(10000)
-            };
-        }
-    }
-
-    class Car
-    {
-        public const int MaxSpeed = 100;
-        public int CurrentSpeed { get; set; }
-        public string PetName { get; set; }
-
-        private bool carIsDead;
-
-        public Car() { }
-        public Car(string name, int speed)
-        {
-            CurrentSpeed = speed;
-            PetName = name;
-        }
-
-        public void Accelerate(int delta)
-        {
-            if (carIsDead)
-            {
-                Console.WriteLine("{0} is out of order...", PetName);
-            }
-            else
-            {
-                CurrentSpeed += delta;
-                if (CurrentSpeed > MaxSpeed)
-                {
-                    CurrentSpeed = 0;
-                    carIsDead = true;
-
-                    throw new Exception(string.Format("{0} has overheated!", PetName));
-                }
-                else
-                {
-                    Console.WriteLine("=> CurrentSpeed = {0}", CurrentSpeed);
-                }
-            }
-        }
-    }
-
-    class SRSystem
-    {
-        public string Version { get; set; }
-        public int Price { get; set; }
     }
 }

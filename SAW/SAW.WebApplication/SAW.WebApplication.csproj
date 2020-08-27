@@ -165,15 +165,18 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Content\2020062317.png" />
-    <Content Include="Content\2020063013.png" />
-    <Content Include="Content\440000_2020062317.png" />
-    <Content Include="Content\440100_2020062317.png" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\polygons440000.png" />
-    <Content Include="Content\polygons440100.png" />
-    <Content Include="Content\polygonschina.png" />
+    <Content Include="Content\images\2020082711_IDW.png" />
+    <Content Include="Content\images\2020082711_IDW1.png" />
+    <Content Include="Content\images\2020082711_IDW2.png" />
+    <Content Include="Content\images\2020082711_IDW3.png" />
+    <Content Include="Content\images\2020082711_IDW4.png" />
+    <Content Include="Content\images\2020082711_Kriging.png" />
+    <Content Include="Content\images\2020082711_Kriging2.png" />
+    <Content Include="Content\images\polygons440000.png" />
+    <Content Include="Content\images\polygons440100.png" />
+    <Content Include="Content\images\polygonschina.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

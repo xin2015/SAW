@@ -61,6 +61,7 @@
     <Compile Include="Helpers\HashHelper.cs" />
     <Compile Include="Helpers\HttpHelper.cs" />
     <Compile Include="Helpers\IPHelper.cs" />
+    <Compile Include="Helpers\MatrixHelper.cs" />
     <Compile Include="Helpers\RegistryHelper.cs" />
     <Compile Include="Helpers\RSAHelper.cs" />
     <Compile Include="Helpers\ShortcutHelper.cs" />
@@ -69,11 +70,9 @@
     <Compile Include="Helpers\XmlSerializerHelper.cs" />
     <Compile Include="Helpers\ZipHelper.cs" />
     <Compile Include="InterpolationAlgorithm\BilinearInterpolation.cs" />
-    <Compile Include="InterpolationAlgorithm\BilinearInterpolationMatrix.cs" />
-    <Compile Include="InterpolationAlgorithm\IDWMatrix.cs" />
     <Compile Include="InterpolationAlgorithm\IDW.cs" />
+    <Compile Include="InterpolationAlgorithm\IPredict.cs" />
     <Compile Include="InterpolationAlgorithm\Kriging.cs" />
-    <Compile Include="InterpolationAlgorithm\KrigingSrc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

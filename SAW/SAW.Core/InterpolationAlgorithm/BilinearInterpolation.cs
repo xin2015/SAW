@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SAW.Core.InterpolationAlgorithm
 {
-    public class BilinearInterpolation
+    public class BilinearInterpolation : IPredict
     {
         public double[] X { get; set; }
         public double[] Y { get; set; }
@@ -19,7 +19,7 @@ namespace SAW.Core.InterpolationAlgorithm
             this.T = T;
         }
 
-        public double GetValue(double x, double y)
+        public double Predict(double x, double y)
         {
             double xa = (x - X[0]) / (X[2] - X[0]);
             double ya = (y - Y[0]) / (Y[2] - Y[0]);
