@@ -79,11 +79,9 @@ namespace SAW.WebApplication.Controllers
         public ActionResult GetChinaAirQualityPNG()
         {
             List<double> t = new List<double>(), x = new List<double>(), y = new List<double>();
-            double[] extent = new double[] { 73.2, 17.8, 135.4, 53.8 };
-            string fileName1;
-            string fileName2;
-            string fileName3;
-            string fileName4;
+            //double[] extent = new double[] { 73.2, 17.8, 135.4, 53.8 };
+            double[] extent = new double[] { 73.502355, 3.397162, 135.095670, 53.563269 };
+            string fileName;
             using (DataCenterServiceClient client = new DataCenterServiceClient())
             {
                 StationHourData[] data = client.GetStationHourDataListFromLive("GDAEIB", "2019!@GD");
@@ -118,16 +116,10 @@ namespace SAW.WebApplication.Controllers
                         }
                     }
                 }
-                fileName1 = string.Format("D:\\{0}_IDW1.png", data.First().TimePoint.ToString("yyyyMMddHH"));
-                fileName2 = string.Format("D:\\{0}_IDW2.png", data.First().TimePoint.ToString("yyyyMMddHH"));
-                fileName3 = string.Format("D:\\{0}_IDW3.png", data.First().TimePoint.ToString("yyyyMMddHH"));
-                fileName4 = string.Format("D:\\{0}_IDW4.png", data.First().TimePoint.ToString("yyyyMMddHH"));
+                fileName = string.Format("D:\\{0}_IDW.png", data.First().TimePoint.ToString("yyyyMMddHH"));
             }
             double resolution = (extent[2] - extent[0]) / 1023;
-            BitmapHelper.DrawGridByIDW1(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName1);
-            BitmapHelper.DrawGridByIDW2(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName2);
-            BitmapHelper.DrawGridByIDW3(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName3);
-            BitmapHelper.DrawGridByIDW4(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName4);
+            BitmapHelper.DrawGridByIDW(t.ToArray(), x.ToArray(), y.ToArray(), extent, resolution, fileName);
             return Content("Done");
         }
 
@@ -265,7 +257,7 @@ namespace SAW.WebApplication.Controllers
             using (DataCenterServiceClient client = new DataCenterServiceClient())
             {
                 StationHourData[] data = client.GetStationHourDataListFromHistoryByTime("GDAEIB", "2019!@GD", DateTime.Today.AddDays(-1));
-                data = data.Where(o => o.AQI != "—").ToArray();
+                //data = data.Where(o => o.AQI != "—").ToArray();
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
         }
@@ -338,7 +330,7 @@ namespace SAW.WebApplication.Controllers
                     Y[i] = y;
                     T[i] = t;
                 }
-                idw = new IDW(X, Y, T, 2);
+                idw = new IDW(X, Y, T);
                 kriging = new Kriging(X, Y, T);
             }
             double temp = idw.Predict(112, 36);

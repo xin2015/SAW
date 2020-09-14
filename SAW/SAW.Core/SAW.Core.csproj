@@ -71,6 +71,7 @@
     <Compile Include="Helpers\ZipHelper.cs" />
     <Compile Include="InterpolationAlgorithm\BilinearInterpolation.cs" />
     <Compile Include="InterpolationAlgorithm\IDW.cs" />
+    <Compile Include="InterpolationAlgorithm\IDWC.cs" />
     <Compile Include="InterpolationAlgorithm\IPredict.cs" />
     <Compile Include="InterpolationAlgorithm\Kriging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

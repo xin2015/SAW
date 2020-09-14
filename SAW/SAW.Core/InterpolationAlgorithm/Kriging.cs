@@ -193,8 +193,13 @@ namespace SAW.Core.InterpolationAlgorithm
             int n = T.Length;
             double[] k = new double[n];
             int i;
+            double xi, yi;
             for (i = 0; i < n; i++)
-                k[i] = Model(Math.Pow(Math.Pow(x - X[i], 2) + Math.Pow(y - Y[i], 2), 0.5));
+            {
+                xi = x - X[i];
+                yi = y - Y[i];
+                k[i] = Model(Math.Sqrt(xi * xi + yi * yi));
+            }
             return MatrixHelper.Multiply(k, M, 1, n, 1)[0];
         }
 
@@ -203,8 +208,13 @@ namespace SAW.Core.InterpolationAlgorithm
             int n = T.Length;
             double[] k = new double[n];
             int i;
+            double xi, yi;
             for (i = 0; i < n; i++)
-                k[i] = Model(Math.Pow(Math.Pow(x - X[i], 2) + Math.Pow(y - Y[i], 2), 0.5));
+            {
+                xi = x - X[i];
+                yi = y - Y[i];
+                k[i] = Model(Math.Sqrt(xi * xi + yi * yi));
+            }
             return Model(0) + MatrixHelper.Multiply(MatrixHelper.Multiply(k, K, 1, n, n), k, 1, n, 1)[0];
         }
     }

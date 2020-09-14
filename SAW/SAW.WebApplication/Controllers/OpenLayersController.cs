@@ -23,5 +23,10 @@ namespace SAW.WebApplication.Controllers
         {
             return View();
         }
+
+        public ActionResult TurfTest()
+        {
+            return View();
+        }
     }
 }

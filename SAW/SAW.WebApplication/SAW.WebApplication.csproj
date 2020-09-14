@@ -237,6 +237,8 @@
     <Content Include="Scripts\My97DatePicker\WdatePicker.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\turf.js" />
+    <Content Include="Scripts\turf.min.js" />
     <Content Include="Scripts\uploadify\check-exists.php" />
     <Content Include="Scripts\uploadify\index.php" />
     <Content Include="Scripts\uploadify\jquery.uploadify.js" />
@@ -299,6 +301,7 @@
     <Content Include="Views\OpenLayers\Index.cshtml" />
     <Content Include="Views\OpenLayers\GeoJsonChina.cshtml" />
     <Content Include="Views\OpenLayers\Test.cshtml" />
+    <Content Include="Views\OpenLayers\TurfTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

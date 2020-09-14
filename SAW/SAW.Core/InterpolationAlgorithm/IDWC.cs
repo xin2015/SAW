@@ -6,47 +6,32 @@ using System.Threading.Tasks;
 
 namespace SAW.Core.InterpolationAlgorithm
 {
-    public class IDW : IPredict
+    public class IDWC : IPredict
     {
         public double[] X { get; set; }
         public double[] Y { get; set; }
         public double[] T { get; set; }
+        public double P { get; set; }
 
-        public IDW(double[] X, double[] Y, double[] T)
+        public IDWC(double[] X, double[] Y, double[] T, double p)
         {
             this.X = X;
             this.Y = Y;
             this.T = T;
+            P = -p / 2;
         }
 
         public double Predict(double x, double y)
         {
             int length = T.Length;
             double asum = 0, sum = 0;
-            double xi, yi, a;
             for (int i = 0; i < length; i++)
             {
-                xi = X[i] - x;
-                yi = Y[i] - y;
-                a = 1 / (xi * xi + yi * yi);
+                double a = Math.Pow(Math.Pow(X[i] - x, 2) + Math.Pow(Y[i] - y, 2), P);
                 asum += a;
                 sum += a * T[i];
             }
             return sum / asum;
         }
-
-        //public double Predict(double x, double y)
-        //{
-        //    int length = T.Length;
-        //    double asum = 0, sum = 0;
-        //    double a;
-        //    for (int i = 0; i < length; i++)
-        //    {
-        //        a = 1 / (Math.Pow(X[i] - x, 2) + Math.Pow(Y[i] - y, 2));
-        //        asum += a;
-        //        sum += a * T[i];
-        //    }
-        //    return sum / asum;
-        //}
     }
 }

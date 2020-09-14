@@ -26,7 +26,22 @@ namespace SAW.ConsoleApp
 
         static void Main(string[] args)
         {
-
+            for(int i = 0; i < 10; i++)
+            {
+                int v = (int)Math.Pow(10, i);
+                int r = v / 256 / 256;
+                int g = v / 256 % 256;
+                int b = v % 256;
+                int t = r * 256 * 256 + g * 256 + b;
+                if (v == t)
+                {
+                    Console.WriteLine("==");
+                }
+                else
+                {
+                    Console.WriteLine("!=");
+                }
+            }
             //ILog logger = LogManager.GetLogger<Program>();
             //foreach (DriveInfo di in DriveInfo.GetDrives())
             //{
@@ -44,24 +59,6 @@ namespace SAW.ConsoleApp
             //    }
             //}
 
-            //Console.WriteLine("=> Creating a car and stepping on it!");
-            //Car car = new Car("Zippy", 20);
-            //try
-            //{
-            //    for (int i = 0; i < 10; i++)
-            //    {
-            //        car.Accelerate(10);
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine("\n*** Error! ***");
-            //    Console.WriteLine("Method:{0}", e.TargetSite);
-            //    Console.WriteLine("Message:{0}", e.Message);
-            //    Console.WriteLine("Source:{0}", e.Source);
-            //}
-
-            //Console.WriteLine("\n*** Out of exception logic ***");
             //int length = 200;
             //Random rand = new Random();
             //Stopwatch sw = new Stopwatch();
@@ -69,12 +66,12 @@ namespace SAW.ConsoleApp
             //for (int i = 0; i < length; i++)
             //{
             //    int count = 100 + i * 10;
-            //    List<SRSystem> list = new List<SRSystem>();
+            //    List<int> list = new List<int>();
             //    for (int j = 0; j < count; j++)
             //    {
-            //        list.Add(GetSRSystem());
+            //        list.Add(rand.Next(100));
             //    }
-            //    list.Sort();
+            //    SortHelper.BubbleSort(list);
             //}
             //sw.Stop();
             //Console.WriteLine("{0, -20}:{1}", "BubbleSort", sw.Elapsed);
@@ -130,25 +127,6 @@ namespace SAW.ConsoleApp
             //}
             //sw.Stop();
             //Console.WriteLine("{0, -20}:{1}", "Sort", sw.Elapsed);
-
-            //int sampleCount = 5;
-            //double[] t = new double[sampleCount];
-            //double[] x = new double[sampleCount];
-            //double[] y = new double[sampleCount];
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    t[i] = 2 * i + 1;
-            //    x[i] = i + 1;
-            //    y[i] = i + 1;
-            //}
-            //Variogram variogram = Kriging.Train(t, x, y, KrigingModel.Exponential, 0, 100);
-            //Console.WriteLine(Kriging.Predict(1, 1, variogram));
-            //Console.WriteLine(Kriging.Predict(1, 2, variogram));
-            //Console.WriteLine(Kriging.Predict(1.5, 1, variogram));
-            //Console.WriteLine(Kriging.Predict(1.5, 1.5, variogram));
-            //Console.WriteLine(Kriging.Predict(1.5, 2, variogram));
-            //Console.WriteLine(Kriging.Predict(2, 2, variogram));
-            //Console.ReadLine();
 
             //Random rand = new Random();
             //int sampleCount = 100;
